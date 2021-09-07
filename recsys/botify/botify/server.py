@@ -6,7 +6,7 @@ from flask import Flask
 from flask_redis import Redis
 from flask_restful import Resource, Api, abort, reqparse
 
-from dodify.track import Catalog
+from botify.track import Catalog
 
 root = logging.getLogger()
 root.setLevel("INFO")
@@ -27,7 +27,7 @@ class Hello(Resource):
     def get(self):
         return {
             "status": "alive",
-            "message": "welcome to dodify, the best toy music recommender",
+            "message": "welcome to botify, the best toy music recommender",
         }
 
 

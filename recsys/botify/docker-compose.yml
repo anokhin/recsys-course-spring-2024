@@ -3,7 +3,7 @@ services:
   recommender:
     container_name: recommender-container
     build: .
-    entrypoint: python dodify/server.py
+    entrypoint: python botify/server.py
     ports:
       - '5000:5000'
     depends_on:

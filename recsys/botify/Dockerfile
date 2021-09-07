@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY dodify ./dodify
+COPY botify ./botify
 
 COPY data ./data
 
