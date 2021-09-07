@@ -1,10 +1,11 @@
 import argparse
 from dataclasses import dataclass, asdict
 import pandas as pd
+import tqdm
 
 import yaml
 
-from sim.agents import Recommender, DummyRecommender
+from sim.agents import Recommender, DummyRecommender, RemoteRecommender
 from sim.envs import RecEnv
 from sim.envs.config import RecEnvConfigSchema
 
@@ -33,11 +34,14 @@ def run_episode(episode: int, env: RecEnv, recommender: Recommender):
     return stats
 
 
-def run_experiment(env: RecEnv, episodes: int):
-    recommender = DummyRecommender(env.action_space)
+def run_experiment(env: RecEnv, episodes: int, dummy: bool):
+    if dummy:
+        recommender = DummyRecommender(env.action_space)
+    else:
+        recommender = RemoteRecommender()
 
     stats = []
-    for episode_id in range(episodes):
+    for episode_id in tqdm.trange(episodes):
         stats.append(run_episode(episode_id, env, recommender))
     return stats
 
@@ -46,6 +50,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--episodes", help="Number of episodes in experiment", type=int, default=100,
+    )
+    parser.add_argument(
+        "--dummy-recommender",
+        action="store_true",
+        help="Run local recommender without calling the actual service",
     )
     parser.add_argument(
         "--seed", help="Random seed for the env", type=int, default=42,
@@ -63,7 +72,7 @@ def main():
 
     with RecEnv(config) as env:
         env.seed(args.seed)
-        stats = run_experiment(env, args.episodes)
+        stats = run_experiment(env, args.episodes, args.dummy_recommender)
 
     print(
         f"## Experiment summary\n\n{pd.DataFrame([asdict(s) for s in stats]).describe().to_markdown()}"
