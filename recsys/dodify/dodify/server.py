@@ -4,7 +4,7 @@ from dataclasses import asdict
 
 from flask import Flask
 from flask_redis import Redis
-from flask_restful import Resource, Api, abort
+from flask_restful import Resource, Api, abort, reqparse
 
 from dodify.track import Catalog
 
@@ -18,6 +18,9 @@ redis = Redis(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload(redis.connection)
+
+parser = reqparse.RequestParser()
+parser.add_argument("track", type=int, location="args")
 
 
 class Hello(Resource):
@@ -39,6 +42,9 @@ class Track(Resource):
 
 class NextTrack(Resource):
     def get(self, user: int):
+        args = parser.parse_args()
+        if args.track is not None:
+            app.logger.info(f"Start new session for user {user} from track {args.track}")
         return {"user": user, "track": int(redis.connection.randomkey())}
 
 

@@ -7,7 +7,7 @@ import yaml
 
 from sim.agents import Recommender, DummyRecommender, RemoteRecommender
 from sim.envs import RecEnv
-from sim.envs.config import RecEnvConfigSchema
+from sim.envs.config import RecEnvConfigSchema, RecEnvConfig
 
 
 @dataclass
@@ -34,11 +34,11 @@ def run_episode(episode: int, env: RecEnv, recommender: Recommender):
     return stats
 
 
-def run_experiment(env: RecEnv, episodes: int, dummy: bool):
+def run_experiment(env: RecEnv, episodes: int, dummy: bool, config: RecEnvConfig):
     if dummy:
         recommender = DummyRecommender(env.action_space)
     else:
-        recommender = RemoteRecommender()
+        recommender = RemoteRecommender(config.remote_recommender_config)
 
     stats = []
     for episode_id in tqdm.trange(episodes):
@@ -72,7 +72,7 @@ def main():
 
     with RecEnv(config) as env:
         env.seed(args.seed)
-        stats = run_experiment(env, args.episodes, args.dummy_recommender)
+        stats = run_experiment(env, args.episodes, args.dummy_recommender, config)
 
     print(
         f"## Experiment summary\n\n{pd.DataFrame([asdict(s) for s in stats]).describe().to_markdown()}"
