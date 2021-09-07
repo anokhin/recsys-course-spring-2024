@@ -1,3 +1,4 @@
 .idea/
 sim/out/
 __pycache__
+dodify/data/*
