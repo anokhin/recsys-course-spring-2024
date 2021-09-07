@@ -3,22 +3,22 @@ from dataclasses import dataclass
 
 @dataclass
 class Playback:
-    song: int
+    track: int
     time: float
 
 
 class Session:
-    def __init__(self, user: int, first_song: int):
+    def __init__(self, user: int, first_track: int):
         self.user = user
         self.finished = False
-        self.playback = [Playback(first_song, 1.0)]
+        self.playback = [Playback(first_track, 1.0)]
 
     def observe(self):
         observation = {"user": self.user}
 
-        # Observe initial song only upon the session start
+        # Observe initial track only upon the session start
         if len(self.playback) == 1:
-            observation["song"] = self.playback[0].song
+            observation["track"] = self.playback[0].track
 
         return observation
 

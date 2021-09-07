@@ -14,13 +14,13 @@ class RecEnv(gym.Env):
         super(RecEnv, self).__init__()
         self.config = config
 
-        # At each step you suggest a song, so each action is a single song ID
-        self.action_space = Discrete(config.song_catalog_config.size)
+        # At each step you suggest a track, so each action is a single track ID
+        self.action_space = Discrete(config.track_catalog_config.size)
 
-        # We need to provide a user ID to the recommender and the initial song
+        # We need to provide a user ID to the recommender and the initial track
         self.observation_space = Dict(
             user=Discrete(config.user_base_size),
-            song=Discrete(config.song_catalog_config.size),
+            track=Discrete(config.track_catalog_config.size),
         )
 
         self.users = self.load_users()
@@ -32,7 +32,7 @@ class RecEnv(gym.Env):
 
     def load_users(self):
         return [
-            User(UserConfig(j, self.config.song_catalog_config))
+            User(UserConfig(j, self.config.track_catalog_config))
             for j in range(self.config.user_base_size)
         ]
 

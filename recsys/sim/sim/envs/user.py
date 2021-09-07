@@ -10,7 +10,7 @@ class User:
 
     def new_session(self):
         return Session(
-            self.config.user, np.random.randint(self.config.song_catalog_config.size)
+            self.config.user, np.random.randint(self.config.track_catalog_config.size)
         )
 
     def consume(self, recommendation: int, session: Session):

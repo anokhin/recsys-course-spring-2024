@@ -4,19 +4,19 @@ import marshmallow_dataclass
 
 
 @dataclass()
-class SongCatalogConfig:
+class TrackCatalogConfig:
     size: int
 
 
 @dataclass
 class UserConfig:
     user: int
-    song_catalog_config: SongCatalogConfig
+    track_catalog_config: TrackCatalogConfig
 
 
 @dataclass
 class RecEnvConfig:
-    song_catalog_config: SongCatalogConfig
+    track_catalog_config: TrackCatalogConfig
     user_base_size: int
 
 
