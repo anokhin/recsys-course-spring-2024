@@ -2,8 +2,9 @@ import gym
 import numpy as np
 from gym.spaces import Discrete, Dict
 
-from .config import RecEnvConfig, UserConfig
-from .user import User
+from .config import RecEnvConfig
+from .track import TrackCatalog
+from .user import UserCatalog
 
 
 class RecEnv(gym.Env):
@@ -14,27 +15,22 @@ class RecEnv(gym.Env):
         super(RecEnv, self).__init__()
         self.config = config
 
+        self.track_catalog = TrackCatalog(config.track_catalog_config)
+        self.user_catalog = UserCatalog(config.user_catalog_config)
+
         # At each step you suggest a track, so each action is a single track ID
         self.action_space = Discrete(config.track_catalog_config.size)
 
         # We need to provide a user ID to the recommender and the initial track
         self.observation_space = Dict(
-            user=Discrete(config.user_base_size),
+            user=Discrete(self.user_catalog.size()),
             track=Discrete(config.track_catalog_config.size),
         )
-
-        self.users = self.load_users()
 
         self.user = None
         self.session = None
 
         self.reset()
-
-    def load_users(self):
-        return [
-            User(UserConfig(j, self.config.track_catalog_config))
-            for j in range(self.config.user_base_size)
-        ]
 
     def step(self, recommendation: int):
         assert self.action_space.contains(recommendation), str(recommendation)
@@ -42,8 +38,8 @@ class RecEnv(gym.Env):
         return self.session.observe(), playback_time, self.session.finished, None
 
     def reset(self):
-        self.user = self.users[np.random.randint(self.config.user_base_size)]
-        self.session = self.user.new_session()
+        self.user = self.user_catalog.sample_user()
+        self.session = self.user.new_session(self.track_catalog)
         return self.session.observe()
 
     def render(self, mode="human", close=False):

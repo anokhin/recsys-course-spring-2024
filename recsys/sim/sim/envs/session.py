@@ -11,16 +11,10 @@ class Session:
     def __init__(self, user: int, first_track: int):
         self.user = user
         self.finished = False
-        self.playback = [Playback(first_track, 1.0)]
+        self.playback = [Playback(first_track, 0.0)]
 
     def observe(self):
-        observation = {"user": self.user}
-
-        # Observe initial track only upon the session start
-        if len(self.playback) == 1:
-            observation["track"] = self.playback[0].track
-
-        return observation
+        return {"user": self.user, "track": self.playback[-1].track}
 
     def update(self, playback: Playback):
         self.playback.append(playback)

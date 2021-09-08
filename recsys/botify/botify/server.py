@@ -20,7 +20,8 @@ catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload(redis.connection)
 
 parser = reqparse.RequestParser()
-parser.add_argument("track", type=int, location="args")
+parser.add_argument("track", type=int, location="form", required=True)
+parser.add_argument("time", type=float, location="form", required=True)
 
 
 class Hello(Resource):
@@ -41,11 +42,13 @@ class Track(Resource):
 
 
 class NextTrack(Resource):
-    def get(self, user: int):
+    def post(self, user: int):
         args = parser.parse_args()
-        if args.track is not None:
-            app.logger.info(f"Start new session for user {user} from track {args.track}")
-        return {"user": user, "track": int(redis.connection.randomkey())}
+        recommendation = int(redis.connection.randomkey())
+        app.logger.info(
+            f"User {user} listened to the track {args.track} for {args.time}; recommending track {recommendation}"
+        )
+        return {"user": user, "track": recommendation}
 
 
 api.add_resource(Hello, "/")

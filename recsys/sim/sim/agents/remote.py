@@ -17,9 +17,9 @@ class RemoteRecommender(Recommender):
         self.port = config.port
 
     def recommend(self, observation: Dict[str, int], reward: float, done: bool) -> int:
-        query_params = {"track": observation["track"]} if "track" in observation else {}
-        url = self.get_request_url(f"next/{observation['user']}", query_params)
-        response = requests.get(url)
+        data = {"track": observation["track"], "time": reward}
+        url = self.get_request_url(f"next/{observation['user']}", {})
+        response = requests.post(url, data=data)
         return response.json()["track"]
 
     def get_request_url(self, path, query_params):
