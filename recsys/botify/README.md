@@ -1,4 +1,4 @@
-# Dodify
+# Botify
 
 A toy music recommender
 
