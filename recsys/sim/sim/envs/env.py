@@ -19,12 +19,12 @@ class RecEnv(gym.Env):
         self.user_catalog = UserCatalog(config.user_catalog_config)
 
         # At each step you suggest a track, so each action is a single track ID
-        self.action_space = Discrete(config.track_catalog_config.size)
+        self.action_space = Discrete(self.track_catalog.size())
 
         # We need to provide a user ID to the recommender and the initial track
         self.observation_space = Dict(
             user=Discrete(self.user_catalog.size()),
-            track=Discrete(config.track_catalog_config.size),
+            track=Discrete(self.track_catalog.size()),
         )
 
         self.user = None

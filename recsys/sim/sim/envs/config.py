@@ -5,17 +5,12 @@ import marshmallow_dataclass
 
 @dataclass()
 class TrackCatalogConfig:
-    size: int
-
-
-@dataclass
-class UserConfig:
-    user: int
+    track_embeddings_path: str
 
 
 @dataclass
 class UserCatalogConfig:
-    users: int
+    user_catalog_path: str
 
 
 @dataclass()
