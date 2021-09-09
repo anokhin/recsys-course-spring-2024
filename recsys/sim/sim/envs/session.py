@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import numpy as np
 
 
 @dataclass
@@ -8,8 +9,9 @@ class Playback:
 
 
 class Session:
-    def __init__(self, user: int, first_track: int):
+    def __init__(self, user: int, embedding: np.array, first_track: int):
         self.user = user
+        self.embedding = embedding
         self.finished = False
         self.playback = [Playback(first_track, 0.0)]
 

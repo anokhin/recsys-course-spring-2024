@@ -11,6 +11,9 @@ class TrackCatalogConfig:
 @dataclass
 class UserCatalogConfig:
     user_catalog_path: str
+    default_interest_neighbours: int = 10
+    default_consume_bias: float = 5.0
+    default_consume_sharpness: float = 1.0
 
 
 @dataclass()

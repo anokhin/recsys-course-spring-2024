@@ -34,7 +34,9 @@ class RecEnv(gym.Env):
 
     def step(self, recommendation: int):
         assert self.action_space.contains(recommendation), str(recommendation)
-        playback_time = self.user.consume(recommendation, self.session)
+        playback_time = self.user.consume(
+            recommendation, self.session, self.track_catalog
+        )
         return self.session.observe(), playback_time, self.session.finished, None
 
     def reset(self):
