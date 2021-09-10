@@ -9,8 +9,13 @@ import tqdm
 import yaml
 
 from sim.agents import Recommender, DummyRecommender, RemoteRecommender
+from sim.agents.console import ConsoleRecommender
 from sim.envs import RecEnv
 from sim.envs.config import RecEnvConfigSchema, RecEnvConfig
+
+DUMMY = "dummy"
+REMOTE = "remote"
+CONSOLE = "console"
 
 
 @dataclass
@@ -39,12 +44,16 @@ def run_episode(day: int, episode: int, env: RecEnv, recommender: Recommender):
 
 
 def run_experiment(
-    day: int, env: RecEnv, episodes: int, dummy: bool, config: RecEnvConfig
+    day: int, env: RecEnv, episodes: int, recommender: str, config: RecEnvConfig
 ):
-    if dummy:
+    if recommender == DUMMY:
         recommender = DummyRecommender(env.action_space)
-    else:
+    elif recommender == REMOTE:
         recommender = RemoteRecommender(config.remote_recommender_config)
+    elif recommender == CONSOLE:
+        recommender = ConsoleRecommender(config.remote_recommender_config)
+    else:
+        raise ValueError(f"Unknown recommender type: {recommender}")
 
     stats = []
     for episode_id in tqdm.trange(episodes):
@@ -58,9 +67,7 @@ def main():
         "--episodes", help="Number of episodes in experiment", type=int, default=100,
     )
     parser.add_argument(
-        "--dummy-recommender",
-        action="store_true",
-        help="Run local recommender without calling the actual service",
+        "--recommender", choices=[DUMMY, REMOTE, CONSOLE], help="Recommender to use",
     )
     parser.add_argument(
         "--seed", help="Random seed for the env", type=int, default=42,
@@ -83,7 +90,7 @@ def main():
         day = 1
         while True:
             stats.extend(
-                run_experiment(day, env, args.episodes, args.dummy_recommender, config)
+                run_experiment(day, env, args.episodes, args.recommender, config)
             )
 
             time_control = TimeControl()
