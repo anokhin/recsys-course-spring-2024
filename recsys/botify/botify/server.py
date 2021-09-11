@@ -1,11 +1,13 @@
 import json
 import logging
 from dataclasses import asdict
+from datetime import datetime
 
 from flask import Flask
 from flask_redis import Redis
 from flask_restful import Resource, Api, abort, reqparse
 
+from botify.data import DataLogger, NextTrackDatum
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -15,13 +17,14 @@ app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
 api = Api(app)
 redis = Redis(app)
+data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload(redis.connection)
 
 parser = reqparse.RequestParser()
-parser.add_argument("track", type=int, location="form", required=True)
-parser.add_argument("time", type=float, location="form", required=True)
+parser.add_argument("track", type=int, location="json", required=True)
+parser.add_argument("time", type=float, location="json", required=True)
 
 
 class Hello(Resource):
@@ -45,8 +48,15 @@ class NextTrack(Resource):
     def post(self, user: int):
         args = parser.parse_args()
         recommendation = int(redis.connection.randomkey())
-        app.logger.info(
-            f"User {user} listened to the track {args.track} for {args.time}; recommending track {recommendation}"
+        data_logger.log(
+            "next",
+            NextTrackDatum(
+                int(datetime.now().timestamp()),
+                user,
+                args.track,
+                args.time,
+                recommendation,
+            ),
         )
         return {"user": user, "track": recommendation}
 

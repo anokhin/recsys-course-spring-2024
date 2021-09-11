@@ -2,5 +2,8 @@
   "REDIS_HOST": "redis",
   "REDIS_PORT": 6379,
   "REDIS_DB": 0,
-  "TRACKS_CATALOG": "./data/tracks.json"
+  "TRACKS_CATALOG": "./data/tracks.json",
+  "DATA_LOG_FILE": "./log/data.json",
+  "DATA_LOG_FILE_MAX_BYTES": 104857600,
+  "DATA_LOG_FILE_BACKUP_COPIES": 10
 }
