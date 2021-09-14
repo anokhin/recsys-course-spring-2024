@@ -11,11 +11,13 @@ class Playback:
 
 
 class Session:
-    def __init__(self, user: int, embedding: np.array, first_track: int, budget: int):
+    def __init__(
+        self, user: int, embedding: np.array, first_playback: Playback, budget: int
+    ):
         self.user = user
         self.embedding = embedding
         self.budget = budget
-        self.playback = [Playback(first_track, 0.0)]
+        self.playback = [first_playback]
         self.finished = False
 
     def observe(self):

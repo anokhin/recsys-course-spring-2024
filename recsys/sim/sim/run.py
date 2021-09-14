@@ -78,7 +78,6 @@ def main():
         type=str,
         default="config/env.yml",
     )
-    parser.add_argument("output_dir", help="A path to experiment data", type=str)
     args = parser.parse_args()
 
     config = RecEnvConfigSchema().load(yaml.full_load(open(args.config)))

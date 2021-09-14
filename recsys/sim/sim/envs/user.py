@@ -38,9 +38,11 @@ class User:
         first_track = np.random.choice(
             [track for track in nearest_tracks[0] if track >= 0]
         )
+        first_artist = track_catalog.get_artist(first_track)
+        first_playback = Playback(first_track, 1.0, first_artist)
 
         return Session(
-            self.user, session_interest_embedding, first_track, self.session_budget
+            self.user, session_interest_embedding, first_playback, self.session_budget
         )
 
     def consume(
