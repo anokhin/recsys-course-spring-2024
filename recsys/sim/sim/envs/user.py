@@ -17,6 +17,7 @@ class User:
         consume_bias,
         consume_sharpness,
         session_budget,
+        artist_discount_gamma,
     ):
         self.user = user
         self.interests = interests
@@ -24,6 +25,7 @@ class User:
         self.consume_bias = consume_bias
         self.consume_sharpness = consume_sharpness
         self.session_budget = session_budget
+        self.artist_discount_gamma = artist_discount_gamma
 
     def new_session(self, track_catalog: TrackCatalog):
         session_interest = np.random.choice(self.interests)
@@ -44,26 +46,36 @@ class User:
     def consume(
         self, recommendation: int, session: Session, track_catalog: TrackCatalog
     ):
-        time = self.listen(recommendation, session, track_catalog)
-        budget_decrement = 1 if np.random.random() > time else 0
+        playback = self.listen(recommendation, session, track_catalog)
+        budget_decrement = 1 if np.random.random() > playback.time else 0
 
-        session.update(Playback(recommendation, time), budget_decrement)
+        session.update(playback, budget_decrement)
 
         if session.budget <= 0:
             session.finish()
 
-        return time
+        return playback.time
 
     def listen(
         self, recommendation: int, session: Session, track_catalog: TrackCatalog
-    ) -> float:
+    ) -> Playback:
+        artist = track_catalog.get_artist(recommendation)
+
         # Users don't want to listen to the same track twice
         if recommendation in session:
-            return 0.0
+            return Playback(recommendation, 0.0, artist)
 
         recommendation_embedding = track_catalog.get_embedding(recommendation)
         score = np.dot(recommendation_embedding, session.embedding)
-        return ss.expit((score - self.consume_bias) * self.consume_sharpness)
+        raw_time = ss.expit((score - self.consume_bias) * self.consume_sharpness)
+
+        # Users get upset when we recommend them the same artist multiple times
+        artist_discount = np.power(
+            self.artist_discount_gamma, session.artist_counts()[artist]
+        )
+        time = raw_time * artist_discount
+
+        return Playback(recommendation, time, artist)
 
     def __repr__(self):
         return f"{self.user}"
@@ -88,6 +100,10 @@ class UserCatalog:
                             "consume_sharpness", config.default_consume_sharpness
                         ),
                         user_data.get("session_budget", config.default_session_budget),
+                        user_data.get(
+                            "artist_discount_gamma",
+                            config.default_artist_discount_gamma,
+                        ),
                     )
                 )
 

@@ -1,3 +1,4 @@
+from collections import Counter
 from dataclasses import dataclass
 import numpy as np
 
@@ -6,6 +7,7 @@ import numpy as np
 class Playback:
     track: int
     time: float
+    artist: str = None
 
 
 class Session:
@@ -25,6 +27,9 @@ class Session:
 
     def finish(self):
         self.finished = True
+
+    def artist_counts(self):
+        return Counter([pb.artist for pb in self.playback])
 
     def __contains__(self, track):
         return any([pb.track == track for pb in self.playback])

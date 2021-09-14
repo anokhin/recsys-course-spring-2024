@@ -5,6 +5,7 @@ import marshmallow_dataclass
 
 @dataclass()
 class TrackCatalogConfig:
+    track_meta_path: str
     track_embeddings_path: str
 
 
@@ -15,6 +16,7 @@ class UserCatalogConfig:
     default_consume_bias: float = 5.0
     default_consume_sharpness: float = 1.0
     default_session_budget: int = 5
+    default_artist_discount_gamma: float = 0.9
 
 
 @dataclass()
