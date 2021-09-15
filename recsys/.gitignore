@@ -1,6 +1,4 @@
 .idea/
 sim/out/
 __pycache__
-botify/data/*
 botify/log/*
-sim/data/*
