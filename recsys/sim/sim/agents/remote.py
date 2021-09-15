@@ -18,9 +18,10 @@ class RemoteRecommender(Recommender):
 
     def recommend(self, observation: Dict[str, int], reward: float, done: bool) -> int:
         data = {"track": int(observation["track"]), "time": reward}
-        url = self.get_request_url(f"next/{observation['user']}", {})
+        endpoint = "next" if not done else "last"
+        url = self.get_request_url(f"{endpoint}/{observation['user']}", {})
         response = requests.post(url, json=data)
-        return response.json()["track"]
+        return response.json().get("track")
 
     def get_request_url(self, path, query_params):
         query = urlencode(query_params)

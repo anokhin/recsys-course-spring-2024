@@ -6,12 +6,12 @@ from pythonjsonlogger import jsonlogger
 
 
 @dataclass
-class NextTrackDatum:
+class Datum:
     timestamp: int
     user: int
     track: int
     time: float
-    recommendation: int
+    recommendation: int = None
 
 
 class DataLogger:
@@ -28,5 +28,5 @@ class DataLogger:
 
         self.logger.addHandler(handler)
 
-    def log(self, location, datum: NextTrackDatum):
+    def log(self, location, datum: Datum):
         self.logger.info(location, extra=asdict(datum))
