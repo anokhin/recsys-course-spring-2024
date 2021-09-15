@@ -8,6 +8,7 @@ from flask_redis import Redis
 from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
+from botify.recommenders.random import Random
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -47,7 +48,10 @@ class Track(Resource):
 class NextTrack(Resource):
     def post(self, user: int):
         args = parser.parse_args()
-        recommendation = int(redis.connection.randomkey())
+
+        recommender = Random(redis.connection)
+        recommendation = recommender.recommend_next(user)
+
         data_logger.log(
             "next",
             Datum(

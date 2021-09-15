@@ -4,6 +4,8 @@ from logging.handlers import RotatingFileHandler
 
 from pythonjsonlogger import jsonlogger
 
+from botify.experiment import Experiments
+
 
 @dataclass
 class Datum:
@@ -27,6 +29,12 @@ class DataLogger:
         handler.setFormatter(formatter)
 
         self.logger.addHandler(handler)
+        self.experiment_context = Experiments()
 
     def log(self, location, datum: Datum):
-        self.logger.info(location, extra=asdict(datum))
+        values = asdict(datum)
+        values["experiments"] = {
+            experiment.name: experiment.assign(datum.user).name
+            for experiment in self.experiment_context.experiments
+        }
+        self.logger.info(location, extra=values)
