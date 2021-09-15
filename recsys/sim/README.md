@@ -1,15 +1,19 @@
 # Sim
 
-Simulate music recommender users
+Симулятор поведения пользователей рекомендательного сервиса.
+Реализован как среда OpenAI gym.
+Запускается как обычный питон-скрипт.
 
-```
-export PYTHONPATH=${PYTHONPATH}:.
-```
-
-```
-python sim/run.py --episodes 1 --recommender console --config config/env.yml --seed 31337
-```
-
-```
-python sim/run.py --episodes 1000 --recommender remote --config config/env.yml --seed 31337
-```
+1. Добавляем текущую директорию в $PYTHONPATH
+   ```
+   export PYTHONPATH=${PYTHONPATH}:.
+   ```
+2. Симулятор можно запустить в "ручном" режиме, чтобы самостоятельно подбирать рекомендации для пользователя. 
+   Этот режим предусмотрен для ознакомдения с сервисом.
+   ```
+   python sim/run.py --episodes 1 --recommender console --config config/env.yml --seed 31337
+   ```
+3. Запуск симулятора в режиме "трафика". Параметр `--episodes` определяет число сгенерированных пользовательских сессий.
+   ```
+   python sim/run.py --episodes 1000 --recommender remote --config config/env.yml --seed 31337
+   ```
