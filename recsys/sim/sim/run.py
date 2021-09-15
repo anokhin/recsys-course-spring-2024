@@ -29,7 +29,7 @@ class EpisodeStats:
 def run_episode(day: int, episode: int, env: RecEnv, recommender: Recommender):
     observation = env.reset()
     done = False
-    reward = 0
+    reward = 1.0
 
     stats = EpisodeStats(day, episode)
 
