@@ -1,9 +1,9 @@
 # Botify
 
-Сервис рекомендаций реализован как простое приложение на [Flask](https://flask-restful.readthedocs.io/en/latest/).
+Сервис рекомендаций реализован как приложение на [Flask](https://flask-restful.readthedocs.io/en/latest/).
 Это приложение умеет обрабатывать запросы по REST API.
 В качестве in-memory кэша используется [Redis](https://redis.io/).
-Приложение пишет лог событий в json формате в папку `/app/log/`
+Приложение пишет лог событий в json в папку `/app/log/`
 
 ## Инструкция
 
