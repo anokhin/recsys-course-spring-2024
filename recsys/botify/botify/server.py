@@ -21,7 +21,7 @@ redis = Redis(app)
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
-catalog.upload(redis.connection)
+catalog.upload_tracks(redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)

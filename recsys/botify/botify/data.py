@@ -17,6 +17,15 @@ class Datum:
 
 
 class DataLogger:
+    """
+    Write the provided Datum to the local log file
+    in json format.
+
+    Use an object of this class to write logs of
+    user events. These logs are subsequently loaded
+    to HDFS for analysis.
+    """
+
     def __init__(self, app):
         self.logger = logging.getLogger("data")
 

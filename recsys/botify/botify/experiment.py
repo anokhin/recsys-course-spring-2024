@@ -13,6 +13,23 @@ class Split(Enum):
 
 
 class Experiment:
+    """
+    Represents a single A/B experiment. Assigns
+    any user to one of the treatments based on
+    experiment name and user ID.
+
+    An example usage::
+
+        experiment = Experiments.AA
+        if experiment.assign(user) == Treatment.C:
+            # do control actions
+            ...
+        elif experiment.assign(user) == Treatment.T1:
+            # do treatment actions
+            ...
+
+    """
+
     def __init__(self, name: str, split: Split):
         self.name = name
         self.split = split
@@ -27,6 +44,9 @@ class Experiment:
 
 
 class Experiments:
+    """
+    A static container for all the existing experiments.
+    """
 
     AA = Experiment("AA", Split.HALF_HALF)
 

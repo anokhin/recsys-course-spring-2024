@@ -11,6 +11,11 @@ class Track:
 
 
 class Catalog:
+    """
+    A helper class used to load track data upon server startup
+    and store the data to redis.
+    """
+
     def __init__(self, app):
         self.app = app
         self.tracks = []
@@ -24,11 +29,11 @@ class Catalog:
         self.app.logger.info(f"Loaded {j+1} tracks")
         return self
 
-    def upload(self, redis):
+    def upload_tracks(self, redis):
         self.app.logger.info(f"Uploading tracks to redis")
-        for j, track in enumerate(self.tracks):
+        for track in self.tracks:
             redis.set(track.track, self.track_to_bytes(track))
-        self.app.logger.info(f"Uploaded {j+1} tracks")
+        self.app.logger.info(f"Uploaded {len(self.tracks)} tracks")
 
     def track_to_bytes(self, track):
         return pickle.dumps(track)
