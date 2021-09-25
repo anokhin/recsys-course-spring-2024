@@ -13,6 +13,7 @@ class Datum:
     user: int
     track: int
     time: float
+    latency: float
     recommendation: int = None
 
 

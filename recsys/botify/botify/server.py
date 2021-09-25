@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from dataclasses import asdict
 from datetime import datetime
 
@@ -47,6 +48,8 @@ class Track(Resource):
 
 class NextTrack(Resource):
     def post(self, user: int):
+        start = time.time()
+
         args = parser.parse_args()
 
         recommender = Random(redis.connection)
@@ -59,6 +62,7 @@ class NextTrack(Resource):
                 user,
                 args.track,
                 args.time,
+                time.time() - start,
                 recommendation,
             ),
         )
@@ -67,9 +71,17 @@ class NextTrack(Resource):
 
 class LastTrack(Resource):
     def post(self, user: int):
+        start = time.time()
         args = parser.parse_args()
         data_logger.log(
-            "last", Datum(int(datetime.now().timestamp()), user, args.track, args.time),
+            "last",
+            Datum(
+                int(datetime.now().timestamp()),
+                user,
+                args.track,
+                args.time,
+                time.time() - start,
+            ),
         )
         return {"user": user}
 
