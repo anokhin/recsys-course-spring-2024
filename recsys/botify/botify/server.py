@@ -18,11 +18,11 @@ root.setLevel("INFO")
 app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
 api = Api(app)
-redis = Redis(app)
+tracks_redis = Redis(app)
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
-catalog.upload_tracks(redis.connection)
+catalog.upload_tracks(tracks_redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -39,9 +39,9 @@ class Hello(Resource):
 
 class Track(Resource):
     def get(self, track: int):
-        data = redis.connection.get(track)
+        data = tracks_redis.connection.get(track)
         if data is not None:
-            return asdict(catalog.track_from_bytes(data))
+            return asdict(catalog.from_bytes(data))
         else:
             abort(404, description="Track not found")
 
@@ -52,8 +52,8 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        recommender = Random(redis.connection)
-        recommendation = recommender.recommend_next(user)
+        recommender = Random(tracks_redis.connection)
+        recommendation = recommender.recommend_next(user, args.track, args.time)
 
         data_logger.log(
             "next",

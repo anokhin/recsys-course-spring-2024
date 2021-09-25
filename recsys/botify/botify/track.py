@@ -32,11 +32,11 @@ class Catalog:
     def upload_tracks(self, redis):
         self.app.logger.info(f"Uploading tracks to redis")
         for track in self.tracks:
-            redis.set(track.track, self.track_to_bytes(track))
+            redis.set(track.track, self.to_bytes(track))
         self.app.logger.info(f"Uploaded {len(self.tracks)} tracks")
 
-    def track_to_bytes(self, track):
-        return pickle.dumps(track)
+    def to_bytes(self, instance):
+        return pickle.dumps(instance)
 
-    def track_from_bytes(self, bts):
+    def from_bytes(self, bts):
         return pickle.loads(bts)
