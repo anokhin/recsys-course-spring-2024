@@ -58,7 +58,7 @@ class NextTrack(Resource):
         data_logger.log(
             "next",
             Datum(
-                int(datetime.now().timestamp()),
+                int(datetime.now().timestamp() * 1000),
                 user,
                 args.track,
                 args.time,
@@ -76,7 +76,7 @@ class LastTrack(Resource):
         data_logger.log(
             "last",
             Datum(
-                int(datetime.now().timestamp()),
+                int(datetime.now().timestamp() * 1000),
                 user,
                 args.track,
                 args.time,

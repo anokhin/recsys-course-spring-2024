@@ -46,3 +46,10 @@ curl -H "Content-Type: application/json" -X POST -d '{"track":10,"time":0.3}'  h
 ```
 python dataclient.py --user anokhin log2hdfs --cleanup tmp
 ```
+Стартуем зепелин ноутбук
+```
+export PYSPARK_DRIVER_PYTHON=jupyter
+export PYSPARK_PYTHON=/usr/bin/python3
+export PYSPARK_DRIVER_PYTHON_OPTS='notebook --ip="*" --port=30042 --no-browser'
+pyspark2 --master=yarn --num-executors=2
+```
