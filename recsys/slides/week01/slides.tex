@@ -14,6 +14,8 @@
 \usepackage[most]{tcolorbox}
 \usepackage[normalem]{ulem}
 
+\usepackage{hyperref}
+
 \definecolor{info}{RGB}{62, 180, 137}
 \definecolor{warn}{RGB}{128, 0, 0}
 
@@ -56,6 +58,15 @@
 }
 
 \section{Обзор модуля}
+
+\begin{frame}{Прежде чем начать}
+
+\begin{enumerate}
+\item Пройдите опрос \url{https://forms.gle/k1To7wi3QuXXgP2D7}
+\item Клонируйте репозиторий курса \url{https://gitlab.com/fpmi-atp/atp-mobod2021}
+\end{enumerate}
+
+\end{frame}
 
 \begin{frame}{Обо мне}
 
@@ -210,6 +221,49 @@
 
 \end{frame}
 
+\begin{frame}{Двухступенчатая архитектура / Youtube (2016) \cite{YTBE}}
+% Enormous action space, context
+\begin{columns}
+\begin{column}{0.6\textwidth}
+   \begin{center}
+		\includegraphics[scale=0.25]{images/youtube.png}
+   \end{center}
+\end{column}
+\begin{column}{0.3\textwidth}
+    \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+    Айтемов так много, что учесть {\bf полный контекст} не может даже Google
+    \end{tcolorbox}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Загадка}
+
+Что общего между
+\begin{itemize}
+\item населением городов
+\item количеством друзей у пользователей в социальной сети
+\item размерами лесных массивов
+\item количеством прослушиваний песен в Spotify
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Power law}
+
+\[
+p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
+\]
+
+\begin{center}
+\includegraphics[scale=0.25]{images/longtail.png}
+
+Правило 80/20
+\end{center}
+
+\end{frame}
+
 \begin{frame}{Холодный старт и длинный хвост / Spotify (2016) \cite{SPTF}}
 % Long tail, coldstart
 \begin{columns}
@@ -221,23 +275,6 @@
 \begin{column}{0.3\textwidth}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
     Холодные айтемы и пользователи будут всегда: думаем, что с ними делать
-    \end{tcolorbox}
-\end{column}
-\end{columns}
-
-\end{frame}
-
-\begin{frame}{Двухступенчатая архитектура / Youtube (2016) \cite{YTBE}}
-% Enormous action space, context
-\begin{columns}
-\begin{column}{0.6\textwidth}
-   \begin{center}
-		\includegraphics[scale=0.25]{images/youtube.png}
-   \end{center}
-\end{column}
-\begin{column}{0.3\textwidth}
-    \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-    Айтемов так много, что учесть {\bf полный контекст} для не может даже Google
     \end{tcolorbox}
 \end{column}
 \end{columns}
