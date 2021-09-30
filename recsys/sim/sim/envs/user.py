@@ -75,7 +75,7 @@ class User:
         artist_discount = np.power(
             self.artist_discount_gamma, session.artist_counts()[artist]
         )
-        time = raw_time * artist_discount
+        time = np.around(raw_time * artist_discount, decimals=2)
 
         return Playback(recommendation, time, artist)
 
