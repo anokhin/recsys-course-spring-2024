@@ -13,7 +13,6 @@
 \usepackage{wasysym}
 \usepackage[most]{tcolorbox}
 \usepackage[normalem]{ulem}
-\usepackage{enumitem}
 
 \usepackage{hyperref}
 
@@ -90,15 +89,15 @@
 
 \begin{columns}
 \begin{column}{0.45\textwidth}
-   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Плюсы]
+      \begin{itemize}
       \item Надежная оценка эффекта на любую метрику
       \end{itemize}
     \end{tcolorbox}
 \end{column}
 \begin{column}{0.45\textwidth}
-    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
+      \begin{itemize}
        \item Риск необратимо расстроить пользователей
        \item Риск финансовых потерь
        \item Дорого заводить
@@ -114,8 +113,8 @@
 
 \begin{columns}
 \begin{column}{0.45\textwidth}
-   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Плюсы]
+      \begin{itemize}
       \item Полный контроль над экспериментом
       \item Оценка эффекта на любую метрику
       \item Собрать фидбэк напрямую
@@ -123,8 +122,8 @@
     \end{tcolorbox}
 \end{column}
 \begin{column}{0.45\textwidth}
-    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]  
+    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
+      \begin{itemize}
        \item Дорогой сбор данных
        \item Смещение аудитории
        \item Нечестный фидбэк
@@ -139,16 +138,16 @@
 
 \begin{columns}
 \begin{column}{0.45\textwidth}
-   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+   \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Плюсы]
+      \begin{itemize}
       \item Проверка большого числа гипотез
       \item Нельзя сломать прод
       \end{itemize}
     \end{tcolorbox}
 \end{column}
 \begin{column}{0.45\textwidth}
-    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+    \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
+      \begin{itemize}
        \item Нужно подбирать метрики
        \item Смещение выборки
        \item Результат не обязан обобщаться
@@ -168,11 +167,12 @@
 \vfill
 
 Техники выбора тестовых данных
-\begin{itemize}[label=$\rightarrow$]
-\item Семплировать случайные пары user-item
-\item Семплировать случайные item у каждого пользователя
-\item Семплировать тестовых пользователей
-\item Тестовые данные после обучающих по времени
+\begin{itemize}
+\item Семплировать случайные пары user-item \pause
+\item Семплировать случайные item у каждого пользователя \pause
+\item Семплировать тестовых пользователей \pause
+\item Тестовые данные после обучающих по времени \pause
+\item Написать симулятор системы
 \end{itemize}
 
 \end{frame}
@@ -181,7 +181,7 @@
 \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Бизнесовая метрика]
 % деньги, пользователи, retention, ...
 напрямую интересует бизнес
-\begin{itemize}[label=-]
+\begin{itemize}
   \item сложно оптимизировать
   \item сложно понять, как компоненты системы влияют на метрику
   \item сложно мерить офлайн
@@ -191,7 +191,7 @@
 \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Техническая метрика]
 % точность, разнообразие, ...
 отражает один аспект системы
-\begin{itemize}[label=-]
+\begin{itemize}
   \item можно оптимизировать
   \item можно померить офлайн
   \item не интересует бизнес :(
@@ -279,13 +279,13 @@ RMSE, MAE, accuracy, precision, recall, auc, ...
 \end{column}
 \begin{column}{0.4\textwidth}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+      \begin{itemize}
       \item Легко интерпретировать
       \item Легко реализовать
       \end{itemize}
     \end{tcolorbox}
     \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+      \begin{itemize}
       \item Нечувствительны к порядку внутри $k$
       \item Не дают общей картины для любого $k$
       \end{itemize}
@@ -305,13 +305,13 @@ RMSE, MAE, accuracy, precision, recall, auc, ...
 \end{column}
 \begin{column}{0.4\textwidth}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+      \begin{itemize}
       \item Дают общую картину качества
       \item Больше внимания айтемам в голове списка
       \end{itemize}
     \end{tcolorbox}
     \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+      \begin{itemize}
       \item Подходит только для бинарного фидбэка
       \end{itemize}
     \end{tcolorbox}
@@ -347,14 +347,14 @@ RMSE, MAE, accuracy, precision, recall, auc, ...
 \end{column}
 \begin{column}{0.4\textwidth}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+      \begin{itemize}
       \item Легко интерпретировать
       \item Легко реализовать
       \item Удобна для задач, где имеет значение первый результат
       \end{itemize}
     \end{tcolorbox}
     \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+      \begin{itemize}
       \item Учитывает только первый результат
       \item Быстро убывает
       \end{itemize}
@@ -374,18 +374,28 @@ RMSE, MAE, accuracy, precision, recall, auc, ...
 \end{column}
 \begin{column}{0.4\textwidth}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-      \begin{itemize}[label=+]
+      \begin{itemize}
       \item Учитывает не только бинарный фидбэк
       \item Хорошо учитывает позицию
       \end{itemize}
     \end{tcolorbox}
     \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-      \begin{itemize}[label=--]
+      \begin{itemize}
       \item Сложно интерпретировать
       \end{itemize}
     \end{tcolorbox}
 \end{column}
 \end{columns}
+
+\end{frame}
+
+\begin{frame}{Гайд по выбору метрик Николая Анохина}
+
+\begin{enumerate}
+\item Находим метрики релевантности, которые подходят к задаче
+\item Выбираем в качестве основной самую интерпретируемую
+\item Усложняем метрику, если оказалось, что она не отражает реальность
+\end{enumerate}
 
 \end{frame}
 
@@ -513,7 +523,7 @@ unexp(u, i) = \max_{j \in I_u} \left( -nPMI(i, j) \right)
 \begin{frame}{}
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Простые бейзлайны]
-\begin{itemize}[label=-]
+\begin{itemize}
 \item позволяют определить нижнюю границу качества системы
 \item позволяют быстро стартануть
 \end{itemize}
@@ -522,7 +532,7 @@ unexp(u, i) = \max_{j \in I_u} \left( -nPMI(i, j) \right)
 
 \vfill
 
-\begin{itemize}[label=>]
+\begin{itemize}
 \item Живительный рандом
 \item TopPopular
 \item Эвристики
