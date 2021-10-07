@@ -6,10 +6,13 @@ import mmh3
 class Treatment(Enum):
     C = 0
     T1 = 1
+    T2 = 2
+    T3 = 3
 
 
 class Split(Enum):
     HALF_HALF = 2
+    FOUR_WAY = 4
 
 
 class Experiment:
@@ -49,7 +52,7 @@ class Experiments:
     """
 
     AA = Experiment("AA", Split.HALF_HALF)
-    STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
+    TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.AA, Experiments.STICKY_ARTIST]
+        self.experiments = [Experiments.AA, Experiments.TOP_POP]
