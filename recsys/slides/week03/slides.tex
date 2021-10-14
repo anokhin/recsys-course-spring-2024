@@ -91,7 +91,7 @@
 \begin{frame}{Анализ контента}
 
 \begin{center}
-\begin{tabular}{ l | p{15em} }
+\begin{tabular}{ l | p{20em} }
 {\bf Данные} & {\bf Признаки} \\
 \hline
 Любые & Категориальные / числовые \\
@@ -325,7 +325,7 @@ MinHash for Jaccard Distance
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
   \begin{itemize}
     \item Разреженность пространства
-    \item User-based: очень пользователей для поиска NN
+    \item User-based: очень много пользователей для поиска NN
     \item Item-based: как понять, для каких айтемов считать рейтинги?
   \end{itemize}
 \end{tcolorbox}
@@ -372,7 +372,7 @@ b_{ui} = \mu + b_u + b_i
 
 Оптимизируем
 \[
-\sum_{u, i} (r_ui - \mu - b_u - b_i)^2 + \lambda_1 b_u^2 + \lambda_2 b_i^2 \rightarrow min_{b_u, b_i}
+\sum_{u, i} (b_{ui} - \mu - b_u - b_i)^2 + \lambda_1 b_u^2 + \lambda_2 b_i^2 \rightarrow min_{b_u, b_i}
 \]
 
 \end{frame}
