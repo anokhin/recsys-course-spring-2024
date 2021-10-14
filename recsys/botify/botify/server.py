@@ -10,8 +10,8 @@ from flask_restful import Resource, Api, abort, reqparse
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
+from botify.recommenders.indexed import Indexed
 from botify.recommenders.random import Random
-from botify.recommenders.toppop import TopPop
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -22,6 +22,7 @@ app.config.from_file("config.json", load=json.load)
 api = Api(app)
 tracks_redis = Redis(app)
 artists_redis = Redis(app, config_prefix="REDIS_ARTISTS")
+recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(
@@ -29,6 +30,7 @@ catalog = Catalog(app).load(
 )
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
+catalog.upload_recommendations(recommendations_redis.connection)
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -58,13 +60,11 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.TOP_POP.assign(user)
+        treatment = Experiments.PERSONALIZED.assign(user)
         if treatment == Treatment.T1:
-            recommender = TopPop(catalog.top_tracks[:10])
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100])
-        elif treatment == Treatment.T3:
-            recommender = TopPop(catalog.top_tracks[:1000])
+            recommender = Indexed(
+                tracks_redis.connection, recommendations_redis.connection
+            )
         else:
             recommender = Random(tracks_redis.connection)
 
