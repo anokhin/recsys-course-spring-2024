@@ -10,14 +10,15 @@ class Indexed(Recommender):
     Fall back to the random recommender if no recommendations found for the user.
     """
 
-    def __init__(self, tracks_redis, recommendations_redis):
+    def __init__(self, tracks_redis, recommendations_redis, catalog):
         self.recommendations_redis = recommendations_redis
         self.fallback = Random(tracks_redis)
+        self.catalog = catalog
 
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
         recommendations = self.recommendations_redis.get(user)
         if recommendations is not None:
-            shuffled = list(recommendations)
+            shuffled = list(self.catalog.from_bytes(recommendations))
             random.shuffle(shuffled)
             return shuffled[0]
         else:

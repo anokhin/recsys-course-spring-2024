@@ -2,6 +2,7 @@ import itertools
 import json
 import pickle
 from dataclasses import dataclass
+from typing import Optional, List
 
 
 @dataclass
@@ -9,6 +10,7 @@ class Track:
     track: int
     artist: str
     title: str
+    recommendations: Optional[List[int]] = None
 
 
 class Catalog:
@@ -27,7 +29,14 @@ class Catalog:
         with open(catalog_path) as catalog_file:
             for j, line in enumerate(catalog_file):
                 data = json.loads(line)
-                self.tracks.append(Track(data["track"], data["artist"], data["title"]))
+                self.tracks.append(
+                    Track(
+                        data["track"],
+                        data["artist"],
+                        data["title"],
+                        data.get("recommendations"),
+                    )
+                )
         self.app.logger.info(f"Loaded {j+1} tracks")
 
         self.app.logger.info(f"Loading top tracks from {top_tracks_path}")
