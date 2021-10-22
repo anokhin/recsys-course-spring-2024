@@ -66,16 +66,27 @@
 
 \section{От классики к нейросетям}
 
-\begin{frame}{Deep Neural Networks for YouTube Recommendations \cite{YTBE}}
+\begin{frame}{От классики к нейросетям}
 
+\begin{columns}
+\begin{column}{0.4\textwidth} 
 \begin{center}
 \includegraphics[scale=0.3]{images/youtube-arch.png}
 \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
 
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star\star\star\star$
+\begin{small}
+\begin{tabular}{l c c}
+ & Классика & Нейросетевые \\
+\hline
+Отбор кандидатов & MF & NN \\
+Ранжирование & GBM & NN
 \end{tabular}
+\end{small}
+
+\end{column}
+\end{columns}
 
 \end{frame}
 
@@ -86,14 +97,6 @@
 \hat r_{ui} = \mu + b_u + b_i + q_i^T \left( p_u + \frac{1}{\sqrt{|N(u)|}} \sum_j y_j \right)
 \]
 \end{tcolorbox}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{center}
-\includegraphics[scale=0.3]{images/svdpp.png}
-\end{center}
 
 \end{frame}
 
@@ -141,11 +144,16 @@
 
 \begin{frame}{Истории успеха: отбор кандидатов}
 
+ML = модель + критерий оптимизации + алгоритм оптимизации + данные
+
+\vfill
+
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Как оставить след в науке]
+\pause
 \begin{itemize}
-\item Изобрести или прикрутить хитрый лосс
-\item Изобрести новый метод семплирования данных
-\item Заменить скалярное произведение чем-нибудь покруче
+\item Изобрести или прикрутить хитрый лосс \pause
+\item Изобрести новый метод семплирования данных \pause
+\item Заменить скалярное произведение чем-нибудь покруче \pause
 \item Заменить эмбединги чем-нибудь покруче
 \end{itemize}
 \end{tcolorbox}
@@ -187,11 +195,16 @@
 
 \end{frame}
 
-\begin{frame}{YouTube: отбор кандидатов}
+\begin{frame}{Deep Neural Networks for YouTube Recommendations \cite{YTBE}}
 
 \begin{center}
-\includegraphics[scale=0.3]{images/youtube-candidate.png}
+\includegraphics[scale=0.25]{images/youtube-candidate.png}
 \end{center}
+
+\begin{tabular}{l l}
+Интересность & $\star\star\star\star\star$ \\
+Полезность & $\star\star\star\star\star$
+\end{tabular}
 
 \end{frame}
 
@@ -283,6 +296,11 @@
 \includegraphics[scale=0.3]{images/youtube-rank.png}
 \end{center}
 
+\begin{tabular}{l l}
+Интересность & $\star\star\star\star\star$ \\
+Полезность & $\star\star\star\star\star$
+\end{tabular}
+
 \end{frame}
 
 \begin{frame}{Wide \& Deep Learning: Better Together with TensorFlow \cite{WD}}
@@ -293,7 +311,7 @@
 
 \begin{tabular}{l l}
 Интересность & $\star\star$ \\
-Полезность & $\star\star\star\star$
+Полезность & $\star\star\star$
 \end{tabular}
 
 \end{frame}
