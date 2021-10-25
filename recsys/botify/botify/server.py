@@ -68,13 +68,13 @@ class NextTrack(Resource):
             recommender = Indexed(
                 tracks_redis.connection, recommendations_redis.connection, catalog
             )
-        if treatment == Treatment.T2:
+        elif treatment == Treatment.T2:
             recommender = Contextual(tracks_redis.connection, catalog)
-        if treatment == Treatment.T3:
+        elif treatment == Treatment.T3:
             recommender = StickyArtist(
                 tracks_redis.connection, artists_redis.connection, catalog
             )
-        if treatment == Treatment.T4:
+        elif treatment == Treatment.T4:
             recommender = TopPop(catalog.top_tracks[:100])
         else:
             recommender = Random(tracks_redis.connection)
