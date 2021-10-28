@@ -1,0 +1,501 @@
+\documentclass[11pt,aspectratio=169]{beamer}
+
+\usetheme{Singapore}
+\usecolortheme{orchid}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{bibentry}
+\usepackage{wasysym}
+\usepackage[most]{tcolorbox}
+\usepackage[normalem]{ulem}
+
+\usepackage{hyperref}
+
+\definecolor{info}{RGB}{62, 180, 137}
+\definecolor{warn}{RGB}{128, 0, 0}
+
+\author{Николай Анохин}
+\title{Нерешенные проблемы и новые направления}
+
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+%\logo{} 
+%\institute{} 
+%\date{} 
+%\subject{} 
+
+\begin{document}
+
+{
+\setbeamertemplate{headline}{}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\begin{frame}
+%\tableofcontents
+%\end{frame}
+
+}
+
+\begin{frame}{Программа модуля}
+\begin{tabular}{ l | l | c | c }
+{\bf Дата} & {\bf Тема} & {\bf Семинар} & {\bf Домашка} \\
+\hline
+2021-09-30 & Рекомендательные сервисы в продакшене & \checked &  \\
+2021-10-07 & Метрики и базовые подходы & \checked &  \\ 
+2021-09-14 & Классические алгоритмы рекомендаций & \checked & \checked  \\
+2021-09-21 & Нейросетевые рекомендеры & \checked &  \\
+{\color{info} 2021-09-28} & {\color{info} Нерешенные проблемы и новые направления} & {\color{info} \checked} & 
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Контекст}
+
+\begin{center}
+\includegraphics[scale=0.23]{images/mendeley.jpeg}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Что мы уже умеем}
+
+\begin{huge}
+\[
+\hat r_{ui} = f_{\theta}(x_u, x_i, x_c)
+\]
+\end{huge}
+
+\end{frame}
+
+\section{Разнообразие в рекомендательных системах}
+
+\begin{frame}{Разнообразие / Diversity}
+
+\begin{center}
+\includegraphics[scale=0.22]{images/diversity.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Набираем айтемы с разными аспектами}
+
+$f$ - аспект (признак) айтема, $p(f | i)$ -- вероятность найти аспект у айтема $i$
+
+\vfill
+
+Распределение аспекта у пользователя
+
+\[
+p(f | u) = \frac{\sum_{i \in I_u} p(f | i)}{|I_u|}  
+\]
+
+Распределение аспекта в рекомендациях
+\[
+q(f | u) = \frac{\sum_{i \in RL} p(f | i)}{|RL|}
+\]
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Формируем список так, чтобы $q(f | u)$ совпало с $p(f | u)$
+\end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}{Жадное переранжирование}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Добавляем в список рекомендаций айтем с максимальным значением
+\[
+(1 - \lambda) \cdot s(u, i) + \lambda \cdot gain(i, RL),
+\]
+пока не получим список нужной длины.
+\end{tcolorbox}
+
+\vfill
+
+\begin{itemize}
+\item $s(u, i)$ -- релевантность айтема $i$ для пользователя $u$ 
+\item $gain(i, RL) = div(RL \cup \{i\}) - div(RL)$ -- улучшение разнообразия при добавлении айтема
+\item $\lambda$ -- гиперпараметр
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{A Comparison of Calibrated and Intent-Aware Recommendations \cite{BRIDGE}}
+\begin{center}
+\includegraphics[scale=0.5]{images/spad.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Учим разнообразие вместе с моделью 1}
+
+\begin{center}
+Controllable Multi-Interest Framework for Recommendation \cite{ALIBABA}
+\end{center}
+
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\begin{center}
+\includegraphics[scale=0.3]{images/alibaba.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.45\textwidth} 
+\begin{center}
+\includegraphics[scale=0.2]{images/divres.png}
+\end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Учим разнообразие вместе с моделью 2}
+
+\begin{center}
+Managing Diversity in Airbnb Search \cite{AIRBNB}
+\end{center}
+
+\begin{columns}
+
+\begin{column}{0.45\textwidth}
+\begin{center}
+\includegraphics[scale=0.25]{images/airbnb2.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.45\textwidth} 
+\begin{center}
+\includegraphics[scale=0.25]{images/airbnb.png}
+\end{center}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Пост-процессим предсказания модели, чтобы получить разнообразные рекомендации
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Необходимость разнообразия можно обосновываем A/B тестом.
+\end{tcolorbox}
+
+\end{frame}
+
+\section{Объяснение рекомендаций}
+
+\begin{frame}{Объяснения}
+
+\begin{center}
+\includegraphics[scale=0.22]{images/explainability-1.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Объяснения}
+
+\begin{center}
+\includegraphics[scale=0.22]{images/explainability-2.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Зачем объяснять рекомендации?}
+\begin{itemize} \pause
+\item Прозрачность: объяснить пользователю, как работает система \pause
+\item Контролируемость: позволить пользователю исправить ошибки \pause
+\item Доверие: убедить пользователя, что система работает правильно \pause
+\item Убеждение: мотивировать пользователя к покупке \pause
+\item Полезность: помочь пользователю принять правильное решение \pause
+\item Эффективность: помочь пользователю принять решение быстро \pause
+\item Удовольствие: сделать приятно пользователю
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Case-based]
+Because you have selected or highly rated: Movie A
+\end{tcolorbox}
+
+\vfill
+
+\begin{center}
+\includegraphics[scale=0.3]{images/netflix.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Collaborative]
+Customers Who Bought This Item Also Bought A
+\end{tcolorbox}
+
+\vfill
+
+\begin{center}
+\includegraphics[scale=0.3]{images/amazon.jpeg}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Content-based]
+Recommended because you said you owned Book A
+\end{tcolorbox}
+
+\vfill
+
+\begin{center}
+\includegraphics[scale=0.3]{images/facebook.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Knowledge-based]
+Less Memory and Lower Resolution and Cheaper
+\end{tcolorbox}
+
+\vfill
+
+\begin{center}
+\includegraphics[scale=0.2]{images/amazon2.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Explore, Exploit, and Explain: \\ Personalizing Explainable Recommendations with Bandits \cite{EX3}}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{center}
+\includegraphics[scale=0.4]{images/spotify.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\[
+r(j, e, x) = \sigma(\theta_{global} + \theta_{j} \times 1_j + \theta_e \times 1_e + \theta_x \times 1_x)
+\]
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{Why I like it: Multi-task Learning for Recommendation and Explanation \cite{GAN}}
+
+\begin{center}
+\includegraphics[scale=0.4]{images/gan.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Если хотим делать объяснения рекомендаций, нужно ответить на вопросы:
+\begin{itemize}
+\item Какую цель мы достигнем объяснениями?
+\item Какие объяснения можно получить из модели?
+\item Как правильно представить объяснения пользователю?
+\end{itemize}
+\end{tcolorbox}
+
+\end{frame}
+
+\section{Causal Recommenders}
+
+\begin{frame}{Causal Recommenders}
+
+\begin{center}
+\includegraphics[scale=0.22]{images/serendipity-pony.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Традиционный рекомендер]
+Посмотрит ли пользователь этот фильм, если известно что она смотрела в прошлом?
+\end{tcolorbox}
+
+\vfill
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Causal рекомендер]
+Посмотрит ли пользователь этот фильм, если мы его порекомендуем, и известно, что она смотрела в прошлом?
+\end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}{The Deconfounded Recommender \cite{DECONF}}
+
+\vfill
+
+\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Confounder]
+Переменная, которая влияет и на treatment assignment, и на outcome
+\end{tcolorbox}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{center}
+\includegraphics[scale=0.2]{images/blessings.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{enumerate}
+\item Учим модель $p(z, a_1, \ldots, a_m)$
+\item Оцениваем $E(z_j | a_{1j}, \ldots, a_{mj})$ для каждого наблюдения
+\item Используем оценки для $z_j$ как признак в рекомендере
+\end{enumerate}
+\end{column}
+\end{columns}
+
+\begin{center}
+
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Прежде чем делать causal рекомендации, думаем как поставить эксперимент, измеряющий causal effect.
+\end{tcolorbox}
+
+\end{frame}
+
+\section{RL в рекомендациях}
+
+\begin{frame}{Долгосрочный эффект}
+
+\begin{center}
+\includegraphics[scale=0.22]{images/longterm.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Почему Reinforcement Learning?}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+\begin{enumerate}
+\item Feedback loop: рекомендер влияет на пользователя
+\item Замыкание в пузыре и дилемма explore/exploit
+\item Отложенная награда и долгосрочный эффект
+\item Смещение между обучающими и продакшен данными
+\end{enumerate}
+\end{tcolorbox}
+
+\vfill
+
+\begin{center}
+\includegraphics[scale=0.2]{images/rl.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Где тогда Reinforcement Learning?}
+
+\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
+\begin{itemize}
+\item Огромное количество действий
+\item Отсутствие сред для проверки идей
+\item Дорогая реализация алгоритмов
+\end{itemize}
+\end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}{Deep Reinforcement Learning in Large Discrete Action Spaces \cite{DDPG}}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+\begin{center}
+\includegraphics[scale=0.25]{images/ddpg.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{center}
+\includegraphics[scale=0.25]{images/ddpg-result.png}
+\end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{RecSim: A Configurable Simulation Platform for Recommender Systems \cite{RECSIM}}
+
+\begin{center}
+\includegraphics[scale=0.2]{images/recsim.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
+Придется подождать, пока RL в рекомендациях станет общей практикой.
+\end{tcolorbox}
+
+\vfill
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Пока что привыкаем к вероятностным политикам и логируем вероятности.
+\end{tcolorbox}
+
+\end{frame}
+
+\section{Итоги}
+
+\begin{frame}{Итоги}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+В будущем рекомендательные системы будут давать релевантные, разнообразные и полезные рекомендации. Они будут учитывать долгосрочные интересы пользователей. А пользователи будут понимать, почему им что-то предлагают и смогут котролировать механизмы построения рекомендаций.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+Но понадобится ваша помощь.
+\end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{center}
+\includegraphics[scale=0.5]{images/poll.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}
+
+\begin{center}
+\includegraphics[scale=0.4]{images/thankyou.jpeg}
+
+Не прощаюсь: дедлайн домашки 10 ноября 23:59 МСК
+\end{center}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Литература}
+
+\bibliographystyle{amsalpha}
+\bibliography{references.bib}
+
+\end{frame}
+
+\end{document}
