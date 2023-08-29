@@ -22,6 +22,8 @@
 \author{Николай Анохин}
 \title{Нейросетевые рекомендеры}
 
+\logo{\includegraphics[width=.05\textwidth]{images/ok_logo.png}}
+
 \AtBeginSection[]{
   \begin{frame}
   \vfill
@@ -75,6 +77,11 @@
 Отбор кандидатов & MF & NN \\
 Ранжирование & GBM & NN
 \end{tabular}
+
+\begin{center}
+\includegraphics[scale=0.5]{images/layers.png}
+\end{center}
+
 \end{small}
 
 \end{column}
@@ -84,11 +91,20 @@
 
 \begin{frame}
 
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=SVD++]
+\begin{columns}
+\begin{column}{0.47\textwidth}
+\begin{center}
+\includegraphics[scale=0.25]{images/svdpp.png}
+\end{center}
+\end{column}
+\begin{column}{0.47\textwidth}
+\begin{small}
 \[
 \hat r_{ui} = \mu + b_u + b_i + q_i^T \left( p_u + \frac{1}{\sqrt{|N(u)|}} \sum_j y_j \right)
 \]
-\end{tcolorbox}
+\end{small}
+\end{column}
+\end{columns}
 
 \end{frame}
 
@@ -100,7 +116,7 @@
 \includegraphics[scale=0.25]{images/svdpp.png}
 \end{center}
 \end{column}
-\begin{column}{0.47\textwidth} \pause
+\begin{column}{0.47\textwidth}
 \begin{center}
 \includegraphics[scale=0.25]{images/nn.png}
 \end{center}
@@ -113,17 +129,17 @@
 
 \begin{frame}{Истории успеха: отбор кандидатов}
 
-ML = модель + критерий оптимизации + алгоритм оптимизации + данные
+ML = модель + лосс + алгоритм оптимизации + данные
 
 \vfill
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=Как оставить след в науке]
 \pause
-\begin{itemize}
-\item Изобрести или прикрутить хитрый лосс \pause
-\item Изобрести новый метод семплирования данных \pause
-\item Заменить скалярное произведение чем-нибудь покруче \pause
+\begin{itemize}[<+->]
+\item Заменить скалярное произведение чем-нибудь покруче
 \item Заменить эмбединги чем-нибудь покруче
+\item Изобрести или прикрутить хитрый лосс
+\item Изобрести новый метод сэмплирования данных
 \end{itemize}
 \end{tcolorbox}
 
@@ -376,21 +392,6 @@ The CMN method was presented at SIGIR 18 and combines memory networks and neural
 
 \end{frame}
 
-\begin{frame}{Простые бейзлайны}
-
-SLIM \cite{SLIM} / EASE \cite{EASE}
-\[
-\hat A = A W,
-\]
-где 
-\begin{itemize}
-\item $A$ -- матрица интеракций
-\item $\hat A$ -- предсказанные интеракции
-\item $W_{:,j}$ -- колонка весов агрегации для  $j$ айтема ($W_{ij} \geq 0$ (SLIM), $W_{jj} = 0$).
-\end{itemize}
-
-\end{frame}
-
 \begin{frame}{Проблема сравнений \cite{DALMANN}}
 
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
@@ -419,6 +420,12 @@ SLIM \cite{SLIM} / EASE \cite{EASE}
 Нейросетевой подход не гарантирует выигрыша -- к выбору модели нужно подходить прагматично.
 \end{tcolorbox}
 
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=1.0]{images/bye.jpeg}
+\end{center}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Литература}
