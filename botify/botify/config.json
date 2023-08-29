@@ -1,0 +1,17 @@
+{
+  "REDIS_TRACKS_HOST": "redis",
+  "REDIS_TRACKS_PORT": 6379,
+  "REDIS_TRACKS_DB": 0,
+  "REDIS_ARTIST_HOST": "redis",
+  "REDIS_ARTIST_PORT": 6379,
+  "REDIS_ARTIST_DB": 1,
+  "REDIS_RECOMMENDATIONS_HOST": "redis",
+  "REDIS_RECOMMENDATIONS_PORT": 6379,
+  "REDIS_RECOMMENDATIONS_DB": 2,
+  "TRACKS_CATALOG": "./data/recommendations_20_5.json",
+  "TOP_TRACKS_CATALOG": "./data/top_tracks.json",
+  "RECOMMENDATIONS_FILE_PATH": "./data/recommendations.json",
+  "DATA_LOG_FILE": "./log/data.json",
+  "DATA_LOG_FILE_MAX_BYTES": 104857600,
+  "DATA_LOG_FILE_BACKUP_COPIES": 10
+}
