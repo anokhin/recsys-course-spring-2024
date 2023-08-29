@@ -1,0 +1,136 @@
+@inproceedings{BRIDGE,
+author = {Kaya, Mesut and Bridge, Derek},
+title = {A Comparison of Calibrated and Intent-Aware Recommendations},
+year = {2019},
+isbn = {9781450362436},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3298689.3347045},
+doi = {10.1145/3298689.3347045},
+abstract = {Calibrated and intent-aware recommendation are recent approaches to recommendation
+that have apparent similarities. Both try, to a certain extent, to cover the user's
+interests, as revealed by her user profile. In this paper, we compare them in detail.
+On two datasets, we show the extent to which intent-aware recommendations are calibrated
+and the extent to which calibrated recommendations are diverse. We consider two ways
+of defining a user's interests, one based on item features, the other based on subprofiles
+of the user's profile. We find that defining interests in terms of subprofiles results
+in highest precision and the best relevance/diversity trade-off. Along the way, we
+define a new version of calibrated recommendation and three new evaluation metrics.},
+booktitle = {Proceedings of the 13th ACM Conference on Recommender Systems},
+pages = {151–159},
+numpages = {9},
+keywords = {calibration, diversity, intent-aware},
+location = {Copenhagen, Denmark},
+series = {RecSys '19}
+}
+
+@inproceedings{AIRBNB,
+author = {Abdool, Mustafa and Haldar, Malay and Ramanathan, Prashant and Sax, Tyler and Zhang, Lanbo and Manaswala, Aamir and Yang, Lynn and Turnbull, Bradley and Zhang, Qing and Legrand, Thomas},
+title = {Managing Diversity in Airbnb Search},
+year = {2020},
+isbn = {9781450379984},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3394486.3403345},
+doi = {10.1145/3394486.3403345},
+abstract = {One of the long-standing questions in search systems is the role of diversity in results.
+From a product perspective, showing diverse results provides the user with more choice
+and should lead to an improved experience. However, this intuition is at odds with
+common machine learning approaches to ranking which directly optimize the relevance
+of each individual item without a holistic view of the result set. In this paper,
+we describe our journey in tackling the problem of diversity for Airbnb search, starting
+from heuristic based approaches and concluding with a novel deep learning solution
+that produces an embedding of the entire query context by leveraging Recurrent Neural
+Networks (RNNs). We hope our lessons learned will prove useful to others and motivate
+further research in this area.},
+booktitle = {Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+pages = {2952–2960},
+numpages = {9},
+keywords = {e-commerce, recurrent neural networks, deep learning, neural networks, search ranking, diversity},
+location = {Virtual Event, CA, USA},
+series = {KDD '20}
+}
+
+@article{ALIBABA,
+  title={Controllable Multi-Interest Framework for Recommendation},
+  author={Yukuo Cen and Jianwei Zhang and Xu Zou and Chang Zhou and Hongxia Yang and Jie Tang},
+  journal={Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  year={2020}
+}
+
+@inproceedings{EX3,
+author = {McInerney, James and Lacker, Benjamin and Hansen, Samantha and Higley, Karl and Bouchard, Hugues and Gruson, Alois and Mehrotra, Rishabh},
+title = {Explore, Exploit, and Explain: Personalizing Explainable Recommendations with Bandits},
+year = {2018},
+isbn = {9781450359016},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3240323.3240354},
+doi = {10.1145/3240323.3240354},
+abstract = {The multi-armed bandit is an important framework for balancing exploration with exploitation
+in recommendation. Exploitation recommends content (e.g., products, movies, music
+playlists) with the highest predicted user engagement and has traditionally been the
+focus of recommender systems. Exploration recommends content with uncertain predicted
+user engagement for the purpose of gathering more information. The importance of exploration
+has been recognized in recent years, particularly in settings with new users, new
+items, non-stationary preferences and attributes. In parallel, explaining recommendations
+("recsplanations") is crucial if users are to understand their recommendations. Existing
+work has looked at bandits and explanations independently. We provide the first method
+that combines both in a principled manner. In particular, our method is able to jointly
+(1) learn which explanations each user responds to; (2) learn the best content to
+recommend for each user; and (3) balance exploration with exploitation to deal with
+uncertainty. Experiments with historical log data and tests with live production traffic
+in a large-scale music recommendation service show a significant improvement in user
+engagement.},
+booktitle = {Proceedings of the 12th ACM Conference on Recommender Systems},
+pages = {31–39},
+numpages = {9},
+location = {Vancouver, British Columbia, Canada},
+series = {RecSys '18}
+}
+
+@inproceedings{GAN,
+author = {Lu, Yichao and Dong, Ruihai and Smyth, Barry},
+title = {Why I like It: Multi-Task Learning for Recommendation and Explanation},
+year = {2018},
+isbn = {9781450359016},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3240323.3240365},
+doi = {10.1145/3240323.3240365},
+abstract = {We describe a novel, multi-task recommendation model, which jointly learns to perform
+rating prediction and recommendation explanation by combining matrix factorization,
+for rating prediction, and adversarial sequence to sequence learning for explanation
+generation. The result is evaluated using real-world datasets to demonstrate improved
+rating prediction performance, compared to state-of-the-art alternatives, while producing
+effective, personalized explanations.},
+booktitle = {Proceedings of the 12th ACM Conference on Recommender Systems},
+pages = {4–12},
+numpages = {9},
+keywords = {collaborative filtering, information retrieval, natural language generation, recommender systems, personalization},
+location = {Vancouver, British Columbia, Canada},
+series = {RecSys '18}
+}
+
+@article{DECONF,
+  title={The Deconfounded Recommender: A Causal Inference Approach to Recommendation},
+  author={Yixin Wang and Dawen Liang and Laurent Charlin and David M. Blei},
+  journal={ArXiv},
+  year={2018},
+  volume={abs/1808.06581}
+}
+
+@inproceedings{TREATMENTS,
+author = {Schnabel, Tobias and Swaminathan, Adith and Singh, Ashudeep and Chandak, Navin and Joachims, Thorsten},
+title = {Recommendations as Treatments: Debiasing Learning and Evaluation},
+year = {2016},
+publisher = {JMLR.org},
+abstract = {Most data for evaluating and training recommender systems is subject to selection biases, either through self-selection by the users or through the actions of the recommendation system itself. In this paper, we provide a principled approach to handle selection biases by adapting models and estimation techniques from causal inference. The approach leads to unbiased performance estimators despite biased data, and to a matrix factorization method that provides substantially improved prediction performance on real-world data. We theoretically and empirically characterize the robustness of the approach, and find that it is highly practical and scalable.},
+booktitle = {Proceedings of the 33rd International Conference on International Conference on Machine Learning - Volume 48},
+pages = {1670–1679},
+numpages = {10},
+location = {New York, NY, USA},
+series = {ICML'16}
+}
+
+@misc{BIAS, title={Understanding Biases in Search and Recommender Systems}, url={https://www.searchenginejournal.com/biases-search-recommender-systems/339319/#close}, journal={Search Engine Journal}, author={Jarboe , Greg}, year={2019}} 
