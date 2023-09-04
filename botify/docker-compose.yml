@@ -1,13 +1,22 @@
 version: '3'
 services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - recommender
+    ports:
+      - "5000:5000"
+
   recommender:
-    container_name: recommender-container
     build: .
     entrypoint: python botify/server.py
     ports:
-      - '5000:5000'
+      - "5000"
     depends_on:
       - redis
+
   redis:
     image: redis
     container_name: redis-container

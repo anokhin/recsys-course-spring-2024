@@ -10,13 +10,13 @@
 ## Инструкция
 
 1. [Устанавливаем docker](https://www.docker.com/products/docker-desktop)
-1. Собираем образы и запускаем контейнеры
+1. Собираем образы и запускаем контейнеры (2 рекомендера в параллель)
    ```
-   docker-compose up -d --build 
+   docker-compose up -d --build --scale recommender=N
    ```   
 1. Смотрим логи рекомендера
    ```
-   docker logs recommender-container
+   docker logs botify_recommender_n
    ```
 1. Останавливаем контейнеры
    ```
@@ -44,5 +44,5 @@ curl -H "Content-Type: application/json" -X POST -d '{"track":10,"time":0.3}'  h
 ```
 Скачиваем логи пользовательских сессии с контейнера
 ```
-docker cp recommender-container:/app/log/ /tmp/
+docker cp botify_recommender_n:/app/log/ /tmp/
 ```
