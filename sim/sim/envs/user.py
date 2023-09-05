@@ -110,7 +110,8 @@ class UserCatalog:
                 )
 
     def sample_user(self):
-        return np.random.choice(self.users)
+        user_index = np.random.randint(len(self.users))
+        return self.users[user_index]
 
     def size(self):
         return len(self.users)

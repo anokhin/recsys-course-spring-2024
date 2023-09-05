@@ -1,14 +1,14 @@
 import argparse
 import cmd
-import time
 import itertools
+import time
 from concurrent.futures.process import ProcessPoolExecutor
 from dataclasses import dataclass, asdict
+
 import numpy as np
 import pandas as pd
 import scipy.stats as ss
 import tqdm
-
 import yaml
 
 from sim.agents import Recommender, DummyRecommender, RemoteRecommender
@@ -65,7 +65,7 @@ def run_experiment(
         raise ValueError(f"Unknown recommender type: {recommender}")
 
     stats = []
-    with tqdm.tqdm(total=episodes, position=position) as progress:
+    with recommender, tqdm.tqdm(total=episodes, position=position) as progress:
         for episode_id in range(episodes):
             stats.append(run_episode(day, episode_id, env, recommender))
             progress.update(1)

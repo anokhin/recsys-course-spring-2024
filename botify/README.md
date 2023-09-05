@@ -3,6 +3,7 @@
 Сервис рекомендаций реализован как приложение на [Flask](https://flask-restful.readthedocs.io/en/latest/).
 Это приложение умеет обрабатывать запросы по REST API.
 В качестве in-memory кэша используется [Redis](https://redis.io/).
+В качестве load balancer используется [nginx](https://www.nginx.com/)
 Приложение пишет лог событий в json в папку `/app/log/`
 
 ![Архитектура сервиса botify](architecture.png)
@@ -45,4 +46,8 @@ curl -H "Content-Type: application/json" -X POST -d '{"track":10,"time":0.3}'  h
 Скачиваем логи пользовательских сессии с контейнера
 ```
 docker cp botify_recommender_n:/app/log/ /tmp/
+```
+Мониторим загрузку хостов
+```
+docker stats botify_recommender_1 botify_nginx_1 redis-container
 ```
