@@ -58,7 +58,7 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.RECOMMENDERS.assign(user)
+        treatment = Experiments.AA.assign(user)
         if treatment == Treatment.T1:
             recommender = Random(tracks_redis.connection)
         else:

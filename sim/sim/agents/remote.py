@@ -36,7 +36,7 @@ class RemoteRecommender(Recommender):
         if use_pycurl:
             response = self.post_curl(url, data)
         else:
-            resource = self.post_urllib(url, data)
+            response = self.post_urllib(url, data)
         return response.get("track")
 
     def get_request_url(self, path, query_params):

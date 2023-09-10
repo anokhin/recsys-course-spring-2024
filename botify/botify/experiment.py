@@ -56,15 +56,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    # TODO Seminar 6 step 5: Configure RECOMMENDERS A/B experiment
-
     AA = Experiment("AA", Split.HALF_HALF)
-    STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
-    TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
-    USER_BASED = Experiment("USER_BASED", Split.HALF_HALF)
-    PERSONALIZED = Experiment("PERSONALIZED", Split.HALF_HALF)
-    CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
-    RECOMMENDERS = Experiment("RECOMMENDERS", Split.SEVEN_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.RECOMMENDERS]
+        self.experiments = [Experiments.AA]
