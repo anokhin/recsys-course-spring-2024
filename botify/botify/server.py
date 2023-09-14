@@ -103,5 +103,5 @@ api.add_resource(NextTrack, "/next/<int:user>")
 api.add_resource(LastTrack, "/last/<int:user>")
 
 if __name__ == "__main__":
-    http_server = WSGIServer(("", 5000), app)
+    http_server = WSGIServer(("", 5001), app)
     http_server.serve_forever()

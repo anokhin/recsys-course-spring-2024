@@ -7,13 +7,13 @@ services:
     depends_on:
       - recommender
     ports:
-      - "5000:5000"
+      - "5001:5001"
 
   recommender:
     build: .
     entrypoint: python botify/server.py
     ports:
-      - "5000"
+      - "5001"
     depends_on:
       - redis
 
