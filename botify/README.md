@@ -118,8 +118,10 @@ tensorboard --logdir data/tb
 ![Архитектура сервиса botify](hdfs.png)
 Закидываем логи контейнера в hdfs (папка script должна быть в $PYTHONPATH). 
 Программа dataclient.py отправляет данные в папку юзера: /user/dnikanorova/
+Аргумент --recommender задает кол-во контейнеров, с которых вы хотите собрать логи. 
+Выставляйте его равным запущенному кол-ву докер-контейнерв botify_recommender
 ```
-python dataclient.py --user dnikanorova log2hdfs --cleanup my_remote_dir
+python dataclient.py --user dnikanorova --recommender N log2hdfs --cleanup my_remote_dir
 ```
 Отправляем файлы с сервера в hdfs
 ```
