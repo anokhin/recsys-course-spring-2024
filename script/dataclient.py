@@ -43,18 +43,22 @@ def run_ssh(
 def upload_logs_to_hdfs(command_args, passwd):
     target_hdfs_dir = f"/user/{command_args.user}/{command_args.hdfs_dir[0]}"
     print(
-        f"## Uploading data from {command_args.log_dir} to {target_hdfs_dir} on behalf of {command_args.user}"
+        f"## Uploading data from {command_args.log_dir} to {target_hdfs_dir} on behalf of {command_args.user} for {command_args.recommender} recommenders"
     )
 
     local_tmp_dir = tempfile.mkdtemp()
     remote_temp_dir = "tmp/" + str(int(time.time()))
 
+    recommenders = [f"botify_recommender_{i}" for i in range(1, command_args.recommender + 1)]
+
     ssh = None
     try:
-        run_docker(
-            f"docker cp {command_args.recommender}:{command_args.log_dir} {local_tmp_dir}",
-            args.echo,
-        )
+        for recommender in recommenders:
+            path = os.path.join(local_tmp_dir, recommender)
+            run_docker(
+                f"docker cp {recommender}:{command_args.log_dir} {path}",
+                args.echo,
+            )
 
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -65,14 +69,17 @@ def upload_logs_to_hdfs(command_args, passwd):
 
         run_ssh("mkdir -p " + remote_temp_dir, ssh, echo=args.echo)
 
-        files = os.listdir(local_tmp_dir)
-        scp.put([f"{local_tmp_dir}/{f}" for f in files], remote_path=remote_temp_dir)
+        paths = []
+        for folder, subs, files in os.walk(local_tmp_dir):
+            paths += [os.path.join(folder, sub) for sub in subs]
+
+        scp.put(paths, remote_path=remote_temp_dir, recursive=True)
 
         run_ssh(f"hadoop fs -mkdir -p {target_hdfs_dir}", ssh, echo=args.echo)
 
         if command_args.cleanup:
             run_ssh(
-                f"hadoop fs -rm {target_hdfs_dir}/*",
+                f"hadoop fs -rm -r {target_hdfs_dir}/*",
                 ssh,
                 skippable=True,
                 echo=args.echo,
@@ -96,9 +103,9 @@ def parse_args():
     )
     parser.add_argument(
         "--recommender",
-        help="Recommender service docker container",
-        type=str,
-        default="botify_recommender_1",
+        help="Number of recommender service docker containers",
+        type=int,
+        default=1,
     )
     parser.add_argument(
         "--echo",
