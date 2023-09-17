@@ -47,6 +47,12 @@ class Catalog:
 
         self.app.logger.info(f"Uploaded {len(self.tracks)} tracks")
 
+    def upload_artists(self, redis):
+        self.app.logger.info(f"Uploading artists to redis")
+        # TODO Seminar 1 step 2: implement method to upload artists tracks to redis
+        uploaded = 0
+        self.app.logger.info(f"Uploaded {uploaded} artists")
+
     def to_bytes(self, instance):
         return pickle.dumps(instance)
 
