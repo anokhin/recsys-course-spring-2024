@@ -46,17 +46,25 @@
 
 }
 
-<<<<<<<< HEAD:slides/week01/slides.tex
 \begin{frame}{}
-Входной опрос: \url{https://tinyurl.com/yu4ytbfd}
+
 \begin{center}
 \includegraphics[scale=0.35]{images/overall.png}
 \end{center}
+
+\vfill
+
+Входной опрос: \url{https://shorturl.at/jvxzY}
+
 \end{frame}
 
-========
->>>>>>>> mipt2023:slides/week01-recsys-in-prod/slides.tex
 \section{Архитектуры рекомендательных сервисов}
+
+\begin{frame}
+\begin{center}
+\includegraphics[scale=0.15]{images/mendeley-recs.jpeg}
+\end{center}
+\end{frame}
 
 \begin{frame}{Обзор типичных компонентов RS / Mendeley (2016) \cite{MNDL}}
 % Components
@@ -84,15 +92,14 @@
 
 \end{frame}
 
-<<<<<<<< HEAD:slides/week01/slides.tex
-========
-\begin{frame}
+\begin{frame}{Netflix Prize 2007-2009}
+
 \begin{center}
-\includegraphics[scale=0.15]{images/mendeley-recs.jpeg}
+\includegraphics[scale=0.1]{images/bellkor.jpg}
 \end{center}
+
 \end{frame}
 
->>>>>>>> mipt2023:slides/week01-recsys-in-prod/slides.tex
 \begin{frame}{Обработка данных под высокой нагрузкой / Netflix (2013) \cite{NFLX}}
 
 \begin{columns}
@@ -114,22 +121,14 @@
 \href{https://cassandra.apache.org/_/index.html}{Cassandra}
 }
 
-<<<<<<<< HEAD:slides/week01/slides.tex
-
-\end{frame}
-
-========
 \end{frame}
 
 \begin{frame}
-
 \begin{center}
-\includegraphics[scale=0.27]{images/netflix-6.png}
+\includegraphics[scale=0.25]{images/netflix-6.png}
 \end{center}
-
 \end{frame}
 
->>>>>>>> mipt2023:slides/week01-recsys-in-prod/slides.tex
 \begin{frame}{Рекомендации айтемов из больших каталогов / Youtube (2016) \cite{YTBE}}
 % Enormous action space, context
 \begin{columns}
@@ -192,9 +191,7 @@ p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
 \end{column}
 \end{columns}
 
-\footnote{Ссылки:
-\href{https://kafka.apache.org/}{Кafka}
-}
+\footnote{Ссылки: \href{https://kafka.apache.org/}{Кafka}}
 
 \end{frame}
 
@@ -209,15 +206,34 @@ p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
 \begin{column}{0.35\textwidth}
     \begin{small}
     \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-<<<<<<<< HEAD:slides/week01/slides.tex
+
     Потребности людей нельзя упаковать в удобную метрику. Кроме машинного обучения  в рекомендательных сервисах приходится исполтзовать пре- и пост-процессинг, чтобы гарантировать business-value.
-========
-    Потребности людей нельзя упаковать в удобную метрику. Кроме машинного обучения  в рекомендательных сервисах приходится использовать пре- и пост-процессинг, чтобы гарантировать business-value.
->>>>>>>> mipt2023:slides/week01-recsys-in-prod/slides.tex
+
     \end{tcolorbox}
     \end{small}
 \end{column}
 \end{columns}
+
+\end{frame}
+
+\begin{frame}{Дата-платформы}
+
+\begin{columns}
+\begin{column}{0.6\textwidth}
+   \begin{center}
+		\includegraphics[scale=0.25]{images/ok-feed.png}
+	\end{center}
+\end{column}
+\begin{column}{0.35\textwidth}
+    \begin{small}
+    \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+    Данные -- основной ресурс RS, поэтому важно иметь надежное и понятное логирование. МЛ -- двигатель, но модели сложно менеджить и анализировать. Поэтому {\bf дата платформы} -- это база.
+    \end{tcolorbox}
+    \end{small}
+\end{column}
+\end{columns}
+
+\footnote{Ссылки: \href{https://mlflow.org/}{mlflow} + \href{https://airflow.apache.org/}{Airflow}}
 
 \end{frame}
 
@@ -248,6 +264,7 @@ p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
 \item Хранение данных (Hadoop HDFS)
 \item Batch обработка данных (Spark)
 \item Потоковая обработка данных (Kafka, Spark Streaming)
+\item MLOps тулы (Airflow, MLFlow)
 \end{itemize}
 
 \end{frame}
@@ -303,8 +320,6 @@ p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
 
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Фундаментальная Проблема Causal Inference]
 Для конкретного пользователя невозможно вычислить causal effect напрямую, потому что нельзя пронаблюдать значение целевой переменной при более чем одном значении $T$\footnote{Без дополнительных предположений эту проблему не решить \cite{GELMAN}}
-<<<<<<<< HEAD:slides/week01/slides.tex
-========
 \end{tcolorbox}
 
 \end{frame}
@@ -321,7 +336,6 @@ p(x) = \frac{C} {x^{\alpha}}, \quad x > x_{min}
 
 \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Предположение 2: Stable Unit Treatment Value Assumption]
 Эффект для каждого пользователя зависят только от свойств этого пользователя, но не свойств и исходов других пользователей.
->>>>>>>> mipt2023:slides/week01-recsys-in-prod/slides.tex
 \end{tcolorbox}
 
 \end{frame}
@@ -447,10 +461,30 @@ A/B эксперимент -- надежный способ оценки эфф�
 
 \end{frame}
 
+\begin{frame}{Подпишис}
+
+\begin{columns}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+		\includegraphics[scale=0.35]{images/natasha.png}
+   \end{center}
+\end{column}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+		\url{https://t.me/mlvok}
+		
+		\includegraphics[scale=0.5]{images/tgqr.png}
+   \end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
 \begin{frame}
 \begin{center}
-\includegraphics[scale=0.5]{images/thanks.png}
+\includegraphics[scale=0.4]{images/thanks.png}
 \end{center}
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Литература}
