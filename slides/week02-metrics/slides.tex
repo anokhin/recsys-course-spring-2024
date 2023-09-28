@@ -13,6 +13,7 @@
 \usepackage{wasysym}
 \usepackage[most]{tcolorbox}
 \usepackage[normalem]{ulem}
+\usepackage{MnSymbol}
 
 \usepackage{hyperref}
 
@@ -61,26 +62,7 @@
 
 \end{frame}
 
-\section{Оценка успешности идей}
-
-\begin{frame}{Научный метод}
-
-\begin{columns}
-\begin{column}{0.45\textwidth}   
-   \begin{center}
-      \includegraphics[scale=0.35]{images/method.jpeg}
-    \end{center}
-\end{column}
-\begin{column}{0.45\textwidth}
-    \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=]
-       Чем быстрее проходим все этапы, тем быстрее улучшаем сервис
-    \end{tcolorbox}
-\end{column}
-\end{columns}
-
-<<<<<<<< HEAD:slides/week02/slides.tex
-========
-\end{frame}
+\section{Еще раз об измерении качества идей}
 
 \begin{frame}{}
 
@@ -88,11 +70,16 @@
 Дать пользователям возможность быть ближе к семье и друзьям
 \end{tcolorbox}
 
+\vfill
+
 \begin{center}
-\includegraphics[scale=0.14]{images/odnoklassniki.jpeg}
+\includegraphics[scale=0.1]{images/odnoklassniki.jpeg}
 \end{center}
 
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
+\vfill
+
+Q: Какую метрику вы бы предложили измерять в A/B?
+
 \end{frame}
 
 \begin{frame}{A/B эксперимент \cite{RSHB}}
@@ -109,7 +96,6 @@
     \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=Минусы]
       \begin{itemize}
        \item Риск необратимо расстроить пользователей
-       \item Риск финансовых потерь
        \item Дорого заводить
        \item Долго ждать результат
        \item Метрик не всегда достаточно
@@ -118,17 +104,16 @@
 \end{column}
 \end{columns}
 
-\end{frame}
+\pause
 
-\begin{frame}{}
+\begin{large}
+\begin{tabular}{ll}
+надежность & \color{red}$\filledstar\,\filledstar\,\filledstar$ \\
+гибкость & \color{red}$\filledstar\,\filledstar\,\smallstar$ \\
+скорость & \color{red}$\filledstar\,\smallstar\,\smallstar$ \\
+\end{tabular}
+\end{large}
 
-\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Миссия компании КнигаЛиц]
-Helping users feel closer to their friends and family.
-\end{tcolorbox}
-
-\vfill
-
-Q: Какую метрику вы бы предложили измерять в A/B?
 
 \end{frame}
 
@@ -155,6 +140,17 @@ Q: Какую метрику вы бы предложили измерять в 
 \end{column}
 \end{columns}
 
+\pause
+\vfill
+
+\begin{large}
+\begin{tabular}{ll}
+надежность & \color{red}$\filledstar\,\smallstar\,\smallstar$ \\
+гибкость & \color{red}$\filledstar\,\filledstar\,\filledstar$ \\
+скорость & \color{red}$\filledstar\,\smallstar\,\smallstar$ \\
+\end{tabular}
+\end{large}
+
 \end{frame}
 
 \begin{frame}{Офлайн эксперимент}
@@ -179,47 +175,24 @@ Q: Какую метрику вы бы предложили измерять в 
 \end{column}
 \end{columns}
 
+\pause
+\vfill
+
+\begin{large}
+\begin{tabular}{ll}
+надежность & \color{red}$\filledstar\,\filledstar\,\smallstar$ \\
+гибкость & \color{red}$\filledstar\,\smallstar\,\smallstar$ \\
+скорость & \color{red}$\filledstar\,\filledstar\,\filledstar$ \\
+\end{tabular}
+\end{large}
+
 \end{frame}
 
 \section{Офлайн эксперимент}
 
-<<<<<<<< HEAD:slides/week02/slides.tex
-\begin{frame}{Зачем улучшать RS}
-
-\begin{footnotesize}
-
-бизнесу
-\begin{itemize}
-\item Увеличить продажи
-\item Продвигать более разнообразные айтемы
-\item Улучшить пользовательский опыт
-\item Добиться большей лояльности
-\item Лучше понимать пользователей
-\end{itemize}
-
-пользователям
-\begin{itemize}
-\item Найти лучший товар
-\item Найти {\bf все} подходящие товары
-\item Найти последовательность или набор товаров
-\item Залипнуть
-\item Найти рекомендер, которому можно доверять
-\item Реализовать творческие потребности
-\item Помочь другим сделать выбор
-\end{itemize}
-
-\end{footnotesize}
-
-\end{frame}
-
-\begin{frame}{}
-
-\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Бизнесовая метрика]
-========
 \begin{frame}{Какие бывают метрики}
 
 \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Бизнесовая]
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
 напрямую интересует бизнес
 \begin{itemize}
   \item сложно оптимизировать
@@ -227,12 +200,10 @@ Q: Какую метрику вы бы предложили измерять в 
   \item сложно мерить офлайн
  \end{itemize}
 \end{tcolorbox}
+
 \vfill
-<<<<<<<< HEAD:slides/week02/slides.tex
-\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Техническая метрика]
-========
+
 \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Техническая]
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
 отражает один аспект системы
 \begin{itemize}
   \item можно оптимизировать
@@ -243,16 +214,16 @@ Q: Какую метрику вы бы предложили измерять в 
 
 \end{frame}
 
-\begin{frame}{Какой бывает фидбэк}
+\begin{frame}{Как выбрать техническую метрику}
 
 \begin{columns}
 \begin{column}{0.55\textwidth}
    \begin{center}
-     \includegraphics[scale=0.2]{images/recommendation-events.png}
+     \includegraphics[scale=0.17]{images/recommendation-events.png}
   \end{center}
 \end{column}
 \begin{column}{0.4\textwidth}
-    \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=Техническая метрика]
+    \begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=фидбэк на рекомендации]
     \begin{itemize}%[<+->]
     \item[-] Явный/explicit
     \item[-] Неявный/implicit
@@ -262,56 +233,34 @@ Q: Какую метрику вы бы предложили измерять в 
 \end{column}
 \end{columns}
 
+\vfill
+
+Какие пользовательские данные использовать для метрики?
+\begin{itemize}
+\item События, интересные бизнесу: их мало и долго ждать
+\item Быстрые события: их много, но они хуже отражают задачу
+\end{itemize}
+
 \end{frame}
 
-<<<<<<<< HEAD:slides/week02/slides.tex
 \begin{frame}{}
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-При офлайн оценке нужно стремиться к тому, чтобы данные были максимально похожи на реальность
-\end{tcolorbox}
-
-\vfill
-
-Техники выбора данных для офлайн оценки
-\begin{itemize} %[<+->]
-========
-\begin{frame}{Как сформировать тестовую выборку}
-
-\begin{itemize} [<+->]
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
-\item Семплировать случайные пары user-item
-\item Семплировать случайные item у каждого пользователя 
-\item Семплировать тестовых пользователей
-\item Тестовые данные после обучающих по времени
-\item Написать симулятор системы
+\begin{itemize}
+\item Для измерения качества идей используются все три подхода, но офлайн экмперимент особенно удбоен в рекомендательных задачах.
+\item При подготовке офлайн эксперимента нужно выбрать метрики, которые будут отражать бизнес задачу, и при этом удобно вычисляться.
+\item Нужно правильно организовать тестовую выборку, например исключить data leak во времени.
 \end{itemize}
+\end{tcolorbox}
 
 \end{frame}
 
 \section{Релевантность}
 
-\begin{frame}{Pinkamena Diane Pie}
-
-\begin{columns}
-\begin{column}{0.4\textwidth}
-   \begin{center}
-		\includegraphics[scale=0.25]{images/pony.jpeg}
-   \end{center}
-\end{column}
-\begin{column}{0.55\textwidth}
-    \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-    A comic relief character [...] appears to be the naive party animal of the group, she also displays admirable skill in science and engineering.
-    \end{tcolorbox}
-\end{column}
-\end{columns}
-
-\end{frame}
-
 \begin{frame}{Релевантность}
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-Насколько рекомендации соответствуют вкусам пользователя?
+Выберите из списка три лучших на ваш вкус фильма
 \end{tcolorbox}
 
 \begin{center}
@@ -523,13 +472,9 @@ With 1\% precision loss, percentage of rec. long-tail items increases from 16 to
 \end{frame}
 
 \begin{frame}
-<<<<<<<< HEAD:slides/week02/slides.tex
 Maximal Marginal Relevence \cite{CARBONELL}
-========
-Maximal Marginal Relevance \cite{CARBONELL}
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
 \[
-MMR = \max_j \left[ \lambda \, similarity(j, U) + (1 - \lambda) \max_{k < j} similarity(k, j) \right]
+MMR = \max_j \left[ \lambda \, similarity(j, U) - (1 - \lambda) \max_{k < j} similarity(k, j) \right]
 \]
 \end{frame}
 
@@ -589,7 +534,6 @@ unexp(u, i) = \max_{j \in I_u} \left( -nPMI(i, j) \right)
 
 \end{frame}
 
-<<<<<<<< HEAD:slides/week02/slides.tex
 \begin{frame}
 
 \begin{footnotesize}
@@ -602,7 +546,7 @@ unexp(u, i) = \max_{j \in I_u} \left( -nPMI(i, j) \right)
 {\bf Бизнесу} & & & & & \\
 \hline
 Увеличить продажи & \checked & & & \checked & \\
-Продвигать более разнообразные айтемы & & \checked & \checked & \checked & \\
+Продвигать более разнообразные айтемы & & \checked & \checked & & \\
 Улучшить пользовательский опыт & \checked & & \checked & \checked & \checked \\
 Добиться большей лояльности & & & & & \checked \\
 Лучше понимать пользователей & & & & & \checked \\
@@ -611,25 +555,24 @@ unexp(u, i) = \max_{j \in I_u} \left( -nPMI(i, j) \right)
 \hline
 Найти лучший товар & \checked & & & \checked & \checked \\
 Найти {\bf все} подходящие товары & \checked & \checked & & & \checked \\
-Найти последовательность или набор товаров & & & \checked & & \checked \\
-Залипнуть & & & \checked & \checked & \checked \\
-Найти рекомендер, которому можно доверять & & & & & \checked \\
-Реализовать творческие потребности & & & & & \checked \\
-Помочь другим сделать выбор & & & & & \checked \\
+Найти последовательность или набор товаров & \checked & & & \checked & \checked \\
+Залипнуть & \checked & & \checked & \checked & \checked \\
 \end{tabular}
 
 \end{center}
 
 \end{footnotesize}
-========
-\begin{frame}{Гайд по выбору метрик Николая Анохина}
 
-\begin{enumerate}
-\item Находим метрики, которые подходят к задаче
-\item Выбираем в качестве основной самую интерпретируемую
-\item Усложняем метрику, если оказалось, что она не отражает реальность
-\end{enumerate}
->>>>>>>> mipt2023:slides/week02-metrics/slides.tex
+\end{frame}
+
+\begin{frame}{}
+
+\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
+\begin{itemize}
+\item В офлайн эксперименте выбираем метрики, отражающие важные аспекты задачи.
+\item Сперва делаем максимально просто -- все равно что-то пойдет не так, и метрики придется допиливать.
+\end{itemize}
+\end{tcolorbox}
 
 \end{frame}
 
@@ -674,10 +617,23 @@ Don't be a hero: не связываемся со сложными алгори�
 
 \end{frame}
 
-\begin{frame}
-\begin{center}
-\includegraphics[scale=0.9]{images/zbazibo.jpeg}
-\end{center}
+\begin{frame}{Подпишис}
+
+\begin{columns}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+                \includegraphics[scale=0.7]{images/zbazibo.jpeg}
+   \end{center}
+\end{column}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+                \url{https://t.me/mlvok}
+
+                \includegraphics[scale=0.5]{images/tgqr.png}
+   \end{center}
+\end{column}
+\end{columns}
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Литература}
