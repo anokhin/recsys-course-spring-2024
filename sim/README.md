@@ -25,26 +25,22 @@
 3. Устанавливаем зависимости
    ```
    pip install -r requirements.txt
-   ``` 
-4. Добавляем текущую директорию в $PYTHONPATH
    ```
-   export PYTHONPATH=${PYTHONPATH}:.
-   ```
-5. Симулятор можно запустить в "ручном" режиме, чтобы самостоятельно подбирать рекомендации для пользователя. 
+4. Симулятор можно запустить в "ручном" режиме, чтобы самостоятельно подбирать рекомендации для пользователя. 
    Это режим для ознакомления с симулятором.
    ```
-   python sim/run.py --episodes 1 --config config/env.yml single --recommender console --seed 31337
+   python -m sim.run --episodes 1 --config config/env.yml single --recommender console --seed 31337
    ```
-6. Запуск симулятора в режиме "трафика" в однопоточном режиме.
+5. Запуск симулятора в режиме "трафика" в однопоточном режиме.
    Параметр `--episodes` определяет число сгенерированных пользовательских сессий.
    Однопоточный режим позволяет останавливать симулятор каждый виртуальный день, например чтобы обновлять модель
    ```
-   python sim/run.py --episodes 1000 --config config/env.yml single --recommender remote --seed 31337 
+   python -m sim.run --episodes 1000 --config config/env.yml single --recommender remote --seed 31337 
    ```
-7. Запуск симулятора в режиме "трафика" в многопоточном режиме.
+6. Запуск симулятора в режиме "трафика" в многопоточном режиме.
    Многопоточный режим ускоряет сбор данных.
    ```
-   python sim/run.py --episodes 1000 --config config/env.yml multi --processes 4
+   python -m sim.run --episodes 1000 --config config/env.yml multi --processes 4
    ```   
    
 ## Идеи на будущее

@@ -13,7 +13,7 @@
 1. [Устанавливаем docker](https://www.docker.com/products/docker-desktop)
 1. Собираем образы и запускаем контейнеры (2 рекомендера в параллель)
    ```
-   docker-compose up -d --build --scale recommender=N
+   docker-compose up -d --build --force-recreate --scale recommender=N
    ```   
 1. Смотрим логи рекомендера
    ```

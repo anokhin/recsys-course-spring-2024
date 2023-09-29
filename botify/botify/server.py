@@ -13,6 +13,7 @@ from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.random import Random
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.toppop import TopPop
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -34,6 +35,7 @@ catalog = Catalog(app).load(
 catalog.upload_tracks(tracks_redis.connection)
 # TODO Seminar 1 step 3: upload artists' tracks to redis
 catalog.upload_artists(artists_redis.connection)
+top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -64,11 +66,16 @@ class NextTrack(Resource):
         args = parser.parse_args()
         # TODO Seminar 1 step 5: create and run the A/B experiment
 
-        treatment = Experiments.STICKY_ARTIST.assign(user)
+        treatment = Experiments.TOP_POP.assign(user)
+        fallback = Random(tracks_redis.connection)
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+            recommender = TopPop(top_tracks[:10], fallback)
+        elif treatment == Treatment.T2:
+            recommender = TopPop(top_tracks[:100], fallback)
+        elif treatment == Treatment.T3:
+            recommender = TopPop(top_tracks[:1000], fallback)
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = fallback
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
