@@ -66,18 +66,13 @@ class NextTrack(Resource):
         start = time.time()
 
         args = parser.parse_args()
-        # TODO 3.2: Wire USER_BASED experiment
 
-        treatment = Experiments.TOP_POP.assign(user)
+        treatment = Experiments.USER_BASED.assign(user)
         fallback = Random(tracks_redis.connection)
         if treatment == Treatment.T1:
-            recommender = TopPop(top_tracks[:10], fallback)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(top_tracks[:100], fallback)
-        elif treatment == Treatment.T3:
-            recommender = TopPop(top_tracks[:1000], fallback)
+            recommender = Indexed(recommendations_ub_redis, catalog, fallback)
         else:
-            recommender = fallback
+            recommender = StickyArtist(tracks_redis, artists_redis, catalog)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 

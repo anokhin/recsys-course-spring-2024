@@ -59,7 +59,6 @@ class Catalog:
 
         self.app.logger.info(f"Uploaded {j + 1} artists")
 
-    # TODO 2.1: Upload recommendations to Redis
     def upload_recommendations(
         self, redis, recommendations_path="RECOMMENDATIONS_FILE_PATH"
     ):
