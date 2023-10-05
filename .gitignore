@@ -1,6 +1,7 @@
 .idea/
 sim/out/
 __pycache__
+.ipynb_checkpoints
 botify/log/*
 .DS_Store
 

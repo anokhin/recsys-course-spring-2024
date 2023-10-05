@@ -11,6 +11,7 @@ from gevent.pywsgi import WSGIServer
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
+from botify.recommenders.Indexed import Indexed
 from botify.recommenders.random import Random
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.recommenders.toppop import TopPop
@@ -24,17 +25,18 @@ app.config.from_file("config.json", load=json.load)
 api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
-# TODO Seminar 1 step 1: create a redis db for artists' tracks
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
+recommendations_ub_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
 
 data_logger = DataLogger(app)
 
-catalog = Catalog(app).load(
-    app.config["TRACKS_CATALOG"]
-)
+catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
-# TODO Seminar 1 step 3: upload artists' tracks to redis
 catalog.upload_artists(artists_redis.connection)
+catalog.upload_recommendations(
+    recommendations_ub_redis.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+)
+
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
 parser = reqparse.RequestParser()
@@ -64,7 +66,7 @@ class NextTrack(Resource):
         start = time.time()
 
         args = parser.parse_args()
-        # TODO Seminar 1 step 5: create and run the A/B experiment
+        # TODO 3.2: Wire USER_BASED experiment
 
         treatment = Experiments.TOP_POP.assign(user)
         fallback = Random(tracks_redis.connection)
@@ -114,6 +116,8 @@ api.add_resource(Hello, "/")
 api.add_resource(Track, "/track/<int:track>")
 api.add_resource(NextTrack, "/next/<int:user>")
 api.add_resource(LastTrack, "/last/<int:user>")
+
+app.logger.info(f"Botify service stared")
 
 if __name__ == "__main__":
     http_server = WSGIServer(("", 5001), app)

@@ -12,7 +12,6 @@ class StickyArtist(Recommender):
         self.catalog = catalog
 
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
-        # TODO Seminar 1 step 4: implement the recommender
         track_data = self.tracks_redis.get(prev_track)
         if track_data is not None:
             track = self.catalog.from_bytes(track_data)

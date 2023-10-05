@@ -50,7 +50,6 @@ class Catalog:
 
     def upload_artists(self, redis):
         self.app.logger.info(f"Uploading artists to redis")
-        # TODO Seminar 1 step 2: implement method to upload artists tracks to redis
         sorted_tracks = sorted(self.tracks, key=lambda track: track.artist)
         for j, (artist, artist_catalog) in enumerate(
             itertools.groupby(sorted_tracks, key=lambda track: track.artist)
@@ -58,7 +57,27 @@ class Catalog:
             artist_tracks = [t.track for t in artist_catalog]
             redis.set(artist, self.to_bytes(artist_tracks))
 
-        self.app.logger.info(f"Uploaded {j+1} artists")
+        self.app.logger.info(f"Uploaded {j + 1} artists")
+
+    # TODO 2.1: Upload recommendations to Redis
+    def upload_recommendations(
+        self, redis, recommendations_path="RECOMMENDATIONS_FILE_PATH"
+    ):
+        recommendations_file_path = self.app.config[recommendations_path]
+
+        self.app.logger.info(
+            f"Uploading recommendations to redis from {recommendations_file_path}"
+        )
+
+        j = 0
+        with open(recommendations_file_path) as rf:
+            for line in rf:
+                recommendations = json.loads(line)
+                redis.set(
+                    recommendations["user"], self.to_bytes(recommendations["tracks"])
+                )
+                j += 1
+        self.app.logger.info(f"Uploaded recommendations for {j} users")
 
     def to_bytes(self, instance):
         return pickle.dumps(instance)
