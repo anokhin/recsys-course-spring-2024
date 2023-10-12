@@ -27,6 +27,7 @@ api = Api(app)
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 recommendations_ub_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
+recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
 data_logger = DataLogger(app)
 
@@ -36,6 +37,7 @@ catalog.upload_artists(artists_redis.connection)
 catalog.upload_recommendations(
     recommendations_ub_redis.connection, "RECOMMENDATIONS_UB_FILE_PATH"
 )
+# TODO 2.1: Upload LightFM recommendations to Redis
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
@@ -67,6 +69,7 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
+        # TODO 3.2: Wire new experiment
         treatment = Experiments.USER_BASED.assign(user)
         fallback = Random(tracks_redis.connection)
         if treatment == Treatment.T1:

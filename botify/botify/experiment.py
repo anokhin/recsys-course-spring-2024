@@ -15,6 +15,7 @@ class Treatment(Enum):
 
 class Split(Enum):
     HALF_HALF = 2
+    THREE_WAY = 3
     FOUR_WAY = 4
     FIVE_WAY = 5
     SEVEN_WAY = 7
@@ -60,6 +61,7 @@ class Experiments:
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
     TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
     USER_BASED = Experiment("USER_BASED", Split.HALF_HALF)
+    # TODO 3.1: Crete three-way PERSONALIZED experiment
 
     def __init__(self):
         self.experiments = [Experiments.USER_BASED]
