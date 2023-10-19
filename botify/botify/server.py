@@ -71,14 +71,12 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.PERSONALIZED.assign(user)
+        treatment = Experiments.NCF.assign(user)
         fallback = Random(tracks_redis.connection)
         if treatment == Treatment.T1:
-            recommender = Indexed(recommendations_ub_redis, catalog, fallback)
-        elif treatment == Treatment.T2:
-            recommender = Indexed(recommendations_redis, catalog, fallback)
+            recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
         else:
-            recommender = StickyArtist(tracks_redis, artists_redis, catalog)
+            recommender = Indexed(recommendations_redis.connection, catalog, fallback)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
