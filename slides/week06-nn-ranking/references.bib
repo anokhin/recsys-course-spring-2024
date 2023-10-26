@@ -21,9 +21,6 @@ keywords = {deep learning, recommender system, scalability},
 location = {Boston, Massachusetts, USA},
 series = {RecSys '16}
 }
-
-@misc{ANOKHIN, title={Как я перестал бояться и научился любить нейронные сети}, url={https://habr.com/ru/company/odnoklassniki/blog/525974/}, author={Анохин, Николай}, year={2020}
-} 
  
 @inproceedings{AIRBNB,
 author = {Haldar, Malay and Abdool, Mustafa and Ramanathan, Prashant and Xu, Tao and Yang, Shulin and Duan, Huizhong and Zhang, Qing and Barrow-Williams, Nick and Turnbull, Bradley C. and Collins, Brendan M. and Legrand, Thomas},
@@ -51,87 +48,7 @@ location = {Anchorage, AK, USA},
 series = {KDD '19}
 }
 
-@inproceedings{NCF,
-author = {He, Xiangnan and Liao, Lizi and Zhang, Hanwang and Nie, Liqiang and Hu, Xia and Chua, Tat-Seng},
-title = {Neural Collaborative Filtering},
-year = {2017},
-isbn = {9781450349130},
-publisher = {International World Wide Web Conferences Steering Committee},
-address = {Republic and Canton of Geneva, CHE},
-url = {https://doi.org/10.1145/3038912.3052569},
-doi = {10.1145/3038912.3052569},
-abstract = {In recent years, deep neural networks have yielded immense success on speech recognition,
-computer vision and natural language processing. However, the exploration of deep
-neural networks on recommender systems has received relatively less scrutiny. In this
-work, we strive to develop techniques based on neural networks to tackle the key problem
-in recommendation --- collaborative filtering --- on the basis of implicit feedback.Although
-some recent work has employed deep learning for recommendation, they primarily used
-it to model auxiliary information, such as textual descriptions of items and acoustic
-features of musics. When it comes to model the key factor in collaborative filtering
---- the interaction between user and item features, they still resorted to matrix
-factorization and applied an inner product on the latent features of users and items.By
-replacing the inner product with a neural architecture that can learn an arbitrary
-function from data, we present a general framework named NCF, short for Neural network-based
-Collaborative Filtering. NCF is generic and can express and generalize matrix factorization
-under its framework. To supercharge NCF modelling with non-linearities, we propose
-to leverage a multi-layer perceptron to learn the user-item interaction function.
-Extensive experiments on two real-world datasets show significant improvements of
-our proposed NCF framework over the state-of-the-art methods. Empirical evidence shows
-that using deeper layers of neural networks offers better recommendation performance.},
-booktitle = {Proceedings of the 26th International Conference on World Wide Web},
-pages = {173–182},
-numpages = {10},
-keywords = {matrix factorization, neural networks, collaborative filtering, deep learning, implicit feedback},
-location = {Perth, Australia},
-series = {WWW '17}
-}
 
-@inproceedings{BERT4Rec,
- author = {Sun, Fei and Liu, Jun and Wu, Jian and Pei, Changhua and Lin, Xiao and Ou, Wenwu and Jiang, Peng},
- title = {BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer},
- booktitle = {Proceedings of the 28th ACM International Conference on Information and Knowledge Management},
- series = {CIKM '19},
- year = {2019},
- isbn = {978-1-4503-6976-3},
- location = {Beijing, China},
- pages = {1441--1450},
- numpages = {10},
- url = {http://doi.acm.org/10.1145/3357384.3357895},
- doi = {10.1145/3357384.3357895},
- acmid = {3357895},
- publisher = {ACM},
- address = {New York, NY, USA}
-} 
-
-@inproceedings{DSSM,
-author = {Huang, Po-Sen and He, Xiaodong and Gao, Jianfeng and Deng, Li and Acero, Alex and Heck, Larry},
-title = {Learning Deep Structured Semantic Models for Web Search Using Clickthrough Data},
-year = {2013},
-isbn = {9781450322638},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/2505515.2505665},
-doi = {10.1145/2505515.2505665},
-abstract = {Latent semantic models, such as LSA, intend to map a query to its relevant documents
-at the semantic level where keyword-based matching often fails. In this study we strive
-to develop a series of new latent semantic models with a deep structure that project
-queries and documents into a common low-dimensional space where the relevance of a
-document given a query is readily computed as the distance between them. The proposed
-deep structured semantic models are discriminatively trained by maximizing the conditional
-likelihood of the clicked documents given a query using the clickthrough data. To
-make our models applicable to large-scale Web search applications, we also use a technique
-called word hashing, which is shown to effectively scale up our semantic models to
-handle large vocabularies which are common in such tasks. The new models are evaluated
-on a Web document ranking task using a real-world data set. Results show that our
-best model significantly outperforms other latent semantic models, which were considered
-state-of-the-art in the performance prior to the work presented in this paper.},
-booktitle = {Proceedings of the 22nd ACM International Conference on Information and Knowledge Management},
-pages = {2333–2338},
-numpages = {6},
-keywords = {web search, semantic model, deep learning, clickthrough data},
-location = {San Francisco, California, USA},
-series = {CIKM '13}
-}
 
 @inproceedings{PINSAGE,
 author = {Ying, Rex and He, Ruining and Chen, Kaifeng and Eksombatchai, Pong and Hamilton, William L. and Leskovec, Jure},
@@ -223,13 +140,6 @@ location = {Copenhagen, Denmark},
 series = {RecSys '19}
 }
 
-@inproceedings{DFN,
-  title={Deep Feedback Network for Recommendation},
-  author={Ruobing Xie and Chen Ling and Yalong Wang and Rui Wang and Feng Xia and Leyu Lin},
-  booktitle={IJCAI},
-  year={2020}
-}
-
 @inproceedings{DCN,
 author = {Wang, Ruoxi and Shivanna, Rakesh and Cheng, Derek and Jain, Sagar and Lin, Dong and Hong, Lichan and Chi, Ed},
 title = {DCN V2: Improved Deep and Cross Network and Practical Lessons for Web-Scale Learning to Rank Systems},
@@ -265,7 +175,7 @@ location = {Ljubljana, Slovenia},
 series = {WWW '21}
 }
 
-@misc{ WD, title={Wide and Deep Learning: Better Together with TensorFlow}, url={https://ai.googleblog.com/2016/06/wide-deep-learning-better-together-with.html}, journal={Google AI blog}, author={ Cheng, Heng-Tze}, year={2016}, month={Jun}
+@misc{WD, title={Wide and Deep Learning: Better Together with TensorFlow}, url={https://ai.googleblog.com/2016/06/wide-deep-learning-better-together-with.html}, journal={Google AI blog}, author={ Cheng, Heng-Tze}, year={2016}, month={Jun}
 }
 
 @inproceedings{PROGRESS,
@@ -344,40 +254,56 @@ location = {Amsterdam, Netherlands},
 series = {RecSys '21}
 }
 
-@inproceedings{SLIM,
-  added-at = {2017-05-26T00:00:00.000+0200},
-  author = {Ning, Xia and Karypis, George},
-  biburl = {https://www.bibsonomy.org/bibtex/2b8ade7f72244d0efc68c20b0c989d7ab/dblp},
-  booktitle = {ICDM},
-  crossref = {conf/icdm/2011},
-  editor = {Cook, Diane J. and Pei, Jian and Wang, Wei and Zaïane, Osmar R. and Wu, Xindong},
-  ee = {http://doi.ieeecomputersociety.org/10.1109/ICDM.2011.134},
-  interhash = {a65c6bedb17a01a61f5e3ce4ede2c58b},
-  intrahash = {b8ade7f72244d0efc68c20b0c989d7ab},
-  isbn = {978-0-7695-4408-3},
-  keywords = {dblp},
-  pages = {497-506},
-  publisher = {IEEE Computer Society},
-  timestamp = {2019-10-17T12:58:08.000+0200},
-  title = {SLIM: Sparse Linear Methods for Top-N Recommender Systems.},
-  url = {http://dblp.uni-trier.de/db/conf/icdm/icdm2011.html#NingK11},
-  year = 2011
+@misc{MASKNET,
+      title={MaskNet: Introducing Feature-Wise Multiplication to CTR Ranking Models by Instance-Guided Mask}, 
+      author={Zhiqiang Wang and Qingyun She and Junlin Zhang},
+      year={2021},
+      eprint={2102.07619},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
 }
 
-@inproceedings{EASE,
-author = {Steck, Harald},
-title = {Embarrassingly Shallow Autoencoders for Sparse Data},
-year = {2019},
-isbn = {9781450366748},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/3308558.3313710},
-doi = {10.1145/3308558.3313710},
-abstract = {Combining simple elements from the literature, we define a linear model that is geared toward sparse data, in particular implicit feedback data for recommender systems. We show that its training objective has a closed-form solution, and discuss the resulting conceptual insights. Surprisingly, this simple model achieves better ranking accuracy than various state-of-the-art collaborative-filtering approaches, including deep non-linear models, on most of the publicly available data-sets used in our experiments.},
-booktitle = {The World Wide Web Conference},
-pages = {3251–3257},
-numpages = {7},
-keywords = {Autoencoder, Collaborative Filtering, Neighborhood Approach, Linear Regression, Recommender System, Closed-Form Solution},
-location = {San Francisco, CA, USA},
-series = {WWW '19}
+@misc{DIN,
+      title={Deep Interest Network for Click-Through Rate Prediction}, 
+      author={Guorui Zhou and Chengru Song and Xiaoqiang Zhu and Ying Fan and Han Zhu and Xiao Ma and Yanghui Yan and Junqi Jin and Han Li and Kun Gai},
+      year={2018},
+      eprint={1706.06978},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML}
+}
+
+@misc{CLIP,
+      title={Learning Transferable Visual Models From Natural Language Supervision}, 
+      author={Alec Radford and Jong Wook Kim and Chris Hallacy and Aditya Ramesh and Gabriel Goh and Sandhini Agarwal and Girish Sastry and Amanda Askell and Pamela Mishkin and Jack Clark and Gretchen Krueger and Ilya Sutskever},
+      year={2021},
+      eprint={2103.00020},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+
+@misc{METH,
+      title={Methodologies for Improving Modern Industrial Recommender Systems},
+      author={Shusen Wang},
+      year={2023},
+      eprint={2308.01204},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
+}
+
+@misc{AIRBNB2,
+      title={Improving Deep Learning For Airbnb Search}, 
+      author={Malay Haldar and Mustafa Abdool and Prashant Ramanathan and Tyler Sax and Lanbo Zhang and Aamir Mansawala and Shulin Yang and Bradley Turnbull and Junshuo Liao},
+      year={2020},
+      eprint={2002.05515},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+@misc{NMT,
+      title={Neural Machine Translation by Jointly Learning to Align and Translate}, 
+      author={Dzmitry Bahdanau and Kyunghyun Cho and Yoshua Bengio},
+      year={2016},
+      eprint={1409.0473},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
 }
