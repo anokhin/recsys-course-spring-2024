@@ -73,6 +73,7 @@ class NextTrack(Resource):
 
         treatment = Experiments.NCF.assign(user)
         fallback = Random(tracks_redis.connection)
+        # TODO Seminar 5 step 3: Wire CONTEXTUAL A/B experiment
         if treatment == Treatment.T1:
             recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
         else:

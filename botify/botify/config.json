@@ -11,7 +11,7 @@
   "REDIS_RECOMMENDATIONS_HOST": "redis",
   "REDIS_RECOMMENDATIONS_PORT": 6379,
   "REDIS_RECOMMENDATIONS_DB": 3,
-  "TRACKS_CATALOG": "./data/tracks.json",
+  "TRACKS_CATALOG": "./data/tracks_with_recs.json",
   "TOP_TRACKS": "./data/top_tracks.json",
   "RECOMMENDATIONS_UB_FILE_PATH": "./data/recommendations_ncf.json",
   "RECOMMENDATIONS_FILE_PATH": "./data/recommendations_lfm.json",
