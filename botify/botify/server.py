@@ -12,6 +12,7 @@ from gevent.pywsgi import WSGIServer
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.Indexed import Indexed
+from botify.recommenders.contextual import Contextual
 from botify.recommenders.random import Random
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.recommenders.toppop import TopPop
@@ -71,13 +72,13 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.NCF.assign(user)
+        treatment = Experiments.CONTEXTUAL.assign(user)
         fallback = Random(tracks_redis.connection)
         # TODO Seminar 5 step 3: Wire CONTEXTUAL A/B experiment
         if treatment == Treatment.T1:
-            recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
+            recommender = Contextual(tracks_redis.connection, catalog)
         else:
-            recommender = Indexed(recommendations_redis.connection, catalog, fallback)
+            recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
