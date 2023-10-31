@@ -1,4 +1,4 @@
-\documentclass[11pt,aspectratio=169]{beamer}
+\documentclass[11pt,aspectratio=169,handout]{beamer}
 
 \usetheme{Singapore}
 \usecolortheme{orchid}
@@ -20,13 +20,10 @@
 \definecolor{warn}{RGB}{128, 0, 0}
 
 \author{Николай Анохин}
-\title{Нейросетевые рекомендеры}
+\title{Рекомендеры на графах}
 
-<<<<<<<< HEAD:slides/week04/slides.tex
-========
 \logo{\includegraphics[width=.05\textwidth]{images/ok_logo.png}}
 
->>>>>>>> mipt2023:slides/week07-gnn/slides.tex
 \AtBeginSection[]{
   \begin{frame}
   \vfill
@@ -61,367 +58,286 @@
 
 \end{frame}
 
-\section{От классики к нейросетям}
+\section{Графы и рекомендации}
 
-\begin{frame}{От классики к нейросетям}
+\begin{frame}{Почему графы}
+
+\begin{center}
+\includegraphics[scale=0.4]{images/graphs.jpeg}
+\end{center}
+
+\end{frame}
+
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{images/ok-music-graph.png}}
+\begin{frame}[plain]{Граф исполнителей в Одноклассниках}
+
+20000 вершин \\
+750000 ребер
+
+\vspace{1em}
+
+\includegraphics[scale=0.4]{images/ok-music-graph-legend.png}
+
+\end{frame}
+}
+
+\section{Классика}
+
+\begin{frame}{Personalized Page Rank (PPR) \cite{PPR}}
 
 \begin{columns}
-\begin{column}{0.4\textwidth} 
+\begin{column}{0.4\textwidth}
 \begin{center}
-\includegraphics[scale=0.3]{images/youtube-arch.png}
+\includegraphics[scale=0.4]{images/example-graph.png}
 \end{center}
 \end{column}
+
 \begin{column}{0.5\textwidth}
-
-\begin{small}
-\begin{tabular}{l c c}
- & Классика & Нейросетевые \\
-\hline
-Отбор кандидатов & MF & NN \\
-Ранжирование & GBM & NN
-\end{tabular}
-
-\begin{center}
-\includegraphics[scale=0.5]{images/layers.png}
-\end{center}
-
-\end{small}
-
-\end{column}
-\end{columns}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{columns}
-\begin{column}{0.47\textwidth}
-\begin{center}
-\includegraphics[scale=0.25]{images/svdpp.png}
-\end{center}
-\end{column}
-\begin{column}{0.47\textwidth}
-\begin{small}
+\begin{footnotesize}
+Начальное состояние
 \[
-\hat r_{ui} = \mu + b_u + b_i + q_i^T \left( p_u + \frac{1}{\sqrt{|N(u)|}} \sum_j y_j \right)
+\vec{s}_0 = \begin{pmatrix}
+	1 & 0 & 0 & 0 & 0
+\end{pmatrix}
 \]
-\end{small}
+
+Вероятность перехода
+\[
+\vec{p}_{n+1} = c \vec{s}_n \cdot P + (1 - c) \vec{s}_0 
+\]
+\[
+P = \begin{pmatrix}
+	0 & 1/2 & 1/2 & 0 & 0 \\
+	1/2 & 0 & 1/2 & 0 & 0 \\
+	1/3 & 1/3 & 0 & 1/3 & 0 \\
+	0 & 0 & 1/2 & 0 & 1/2 \\
+	0 & 0 & 0 & 1 & 0
+\end{pmatrix}
+\]
+$(1-c)$ -- вероятность рестарта
+\end{footnotesize}
 \end{column}
+
 \end{columns}
-
-\end{frame}
-
-\begin{frame}
-
-\begin{columns}
-\begin{column}{0.47\textwidth} 
-\begin{center}
-\includegraphics[scale=0.25]{images/svdpp.png}
-\end{center}
-\end{column}
-<<<<<<<< HEAD:slides/week04/slides.tex
-\begin{column}{0.47\textwidth} \pause
-========
-\begin{column}{0.47\textwidth}
->>>>>>>> mipt2023:slides/week07-gnn/slides.tex
-\begin{center}
-\includegraphics[scale=0.25]{images/nn.png}
-\end{center}
-\end{column}
-\end{columns}
-
-\end{frame}
-
-\section{Истории успеха: отбор кандидатов}
-
-\begin{frame}{Истории успеха: отбор кандидатов}
-
-ML = модель + лосс + алгоритм оптимизации + данные
 
 \vfill
 
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Как оставить след в науке]
-\pause
+\begin{tcolorbox}[colback=blue!5,colframe=blue!70,title=]
+Где мы окажемся через бесконечное число шагов?
+\end{tcolorbox}
+
+\end{frame}
+
+\begin{frame}{Вычисление рекомендаций}
+
+\begin{columns}
+
+\begin{column}{0.5\textwidth}
 \begin{itemize}[<+->]
-\item Заменить скалярное произведение чем-нибудь покруче
-\item Заменить эмбединги чем-нибудь покруче
-\item Изобрести или прикрутить хитрый лосс
-\item Изобрести новый метод сэмплирования данных
+\item Точное решение
+\[
+\vec{r} = c \vec{r} P + (1 - c) \vec{s} \quad \Rightarrow \quad
+\]
+\[
+\vec{r} = (1 - c) \vec{s} \left(I - c P \right)^{-1}
+\]
+\item Сэмплирование Монте-Карло
+\item Оптимизированное прямое решение
+\item Оптимизированный power iteration
 \end{itemize}
-\end{tcolorbox}
+\end{column}
 
-\end{frame}
-
-\begin{frame}{Neural Collaborative Filtering \cite{NCF}}
-
-\begin{columns}
-\begin{column}{0.45\textwidth} 
+\begin{column}{0.4\textwidth}
 \begin{center}
-\includegraphics[scale=0.35]{images/ncf.png}
+\includegraphics[scale=0.2]{images/natash.jpeg}
 \end{center}
 \end{column}
-\begin{column}{0.45\textwidth}
-\begin{center}
-\includegraphics[scale=0.35]{images/nfm.png}
-\end{center}
-\end{column}
+
 \end{columns}
 
-\begin{tabular}{l l}
-Интересность & $\star\star\star$ \\
-Полезность & $\star\star\star$
-\end{tabular}
-
 \end{frame}
 
-\begin{frame}{Learning Deep Structured Semantic Models for Web Search using Clickthrough Data \cite{DSSM}}
+\section{Молниеносное введение в GNN}
+
+\begin{frame}{Разные виды данных в нейросетях \cite{GNN}}
 
 \begin{center}
-\includegraphics[scale=0.35]{images/dssm.png}
-\end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star$ \\
-Полезность & $\star\star\star\star$
-\end{tabular}
-
-\end{frame}
-
-\begin{frame}{Deep Neural Networks for YouTube Recommendations \cite{YTBE}}
-
-\begin{center}
-\includegraphics[scale=0.25]{images/youtube-candidate.png}
-\end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star\star\star\star$
-\end{tabular}
-
-\end{frame}
-
-\begin{frame}{BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer \cite{BERT4Rec}}
-
-\begin{center}
-\includegraphics[scale=0.4]{images/bert4rec.png}
-\end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star$ \\
-Полезность & $\star$
-\end{tabular}
-
-\end{frame}
-
-\begin{frame}{BERT4Rec: эксперименты}
-
-\begin{center}
-\includegraphics[scale=0.45]{images/bert4rec-table.png}
+\includegraphics[scale=0.12]{images/inductive-biases.png}
 \end{center}
 
 \end{frame}
 
-\begin{frame}{Deep Feedback Network for Recommendation \cite{DFN}}
+\begin{frame}{Признаки узлов}
 
 \begin{center}
-\includegraphics[scale=0.3]{images/dfn.png}
+\includegraphics[scale=0.15]{images/ethanoic-acid-features.png}
 \end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star$ \\
-Полезность & $\star$
-\end{tabular}
 
 \end{frame}
 
-\section{Истории успеха: ранжирование}
+\begin{frame}{Структура графа}
 
-\begin{frame}{Истории успеха: ранжирование}
+\begin{center}
+\includegraphics[scale=0.15]{images/ethanoic-acid-weighted-adjacency.png}
+\end{center}
 
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Как оставить след в науке]
+\end{frame}
+
+\begin{frame}{Интуиция message passing}
+
+\begin{center}
+\includegraphics[scale=0.24]{images/message-passing-chain.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Message passing}
+
+\begin{center}
+\includegraphics[scale=0.13]{images/message-passing-ethanoic-acid.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{А где же нейросети?}
+
+\begin{center}
+\includegraphics[scale=0.15]{images/message-passing-layer.png}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Общий фреймворк GNN \cite{GNNSURVEY}}
+
+{\bf A.} Message passing в узле $n_v^{(l)}$ на $l$ слое:
+\begin{enumerate}
+\item Агрегация представлений соседей $h_u^{(l)}$ (Aggregation)
+\[
+n_v^{(l)} = Aggregator_l(\{h_u^{(l)}, u \in N(v)\}), 
+\]
+\item Апдейт представления
+\[
+h_v^{(l+1)} = Updater_l(n_v^{(l), h_v^{(l)} })
+\]
+\end{enumerate}
+
+{\bf B.} Использование представлений узлов для решения задачи
 \begin{itemize}
-\item Победить xgboost
-\item Пофиксить смещения
+\item Классификация узлов $f(h_v)$
+\item Предсказание / классификация связей $g(h_v \cdot h_u)$
+\item Классификация графов $h(Pooling(h_v))$
 \end{itemize}
-\end{tcolorbox}
 
 \end{frame}
 
-\begin{frame}{Applying Deep Learning To Airbnb Search \cite{AIRBNB}}
+\begin{frame}{Примеры GNN}
 
-\begin{columns}
-\begin{column}{0.45\textwidth} 
-\begin{center}
-\includegraphics[scale=0.3]{images/airbnb-progression.png}
-\end{center}
-\end{column}
-\begin{column}{0.45\textwidth}
-\begin{center}
-\includegraphics[scale=0.3]{images/airbnb-gbdt.png}
-\end{center}
-\end{column}
-\end{columns}
+GraphSage
 
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-...we were able to deprecate all that complexity by simply scaling the training data 10x and moving to a DNN with 2 hidden layers...
-\end{tcolorbox}
+\includegraphics[scale=0.4]{images/graphsage.png}
 
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star$ \\
-Полезность & $\star\star\star\star\star$
-\end{tabular}
+GAT
+
+\includegraphics[scale=0.4]{images/gat.png}
 
 \end{frame}
 
-\begin{frame}{YouTube: ранжирование}
+\section{GNN в рекомендациях}
+
+\begin{frame}{GNN в рекомендациях \cite{GNNSURVEY}}
 
 \begin{center}
-\includegraphics[scale=0.3]{images/youtube-rank.png}
+\includegraphics[scale=0.3]{images/gnn-rec-problems.png}
 \end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star\star\star\star$
-\end{tabular}
 
 \end{frame}
 
-\begin{frame}{Wide \& Deep Learning: Better Together with TensorFlow \cite{WD}}
+\begin{frame}{GNN для коллаборативной фильтрации}
 
 \begin{center}
-\includegraphics[scale=0.25]{images/widedeep.png}
+\includegraphics[scale=0.3]{images/gnn-cf.png}
 \end{center}
 
-\begin{tabular}{l l}
-Интересность & $\star\star$ \\
-Полезность & $\star\star\star$
-\end{tabular}
-
-\end{frame}
-
-\begin{frame}{DCN V2: Improved Deep \& Cross Network and Practical Lessons for Web-scale Learning to Rank Systems \cite{DCN}}
-
-\begin{columns}
-\begin{column}{0.45\textwidth} 
-\begin{center}
-\includegraphics[scale=0.3]{images/dcn-arch.png}
-\end{center}
-\end{column}
-\begin{column}{0.45\textwidth}
-\begin{center}
-\includegraphics[scale=0.3]{images/dcn-block.png}
-\end{center}
-\end{column}
-\end{columns}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star$ \\
-Полезность & $\star\star\star\star$
-\end{tabular}
-
-\end{frame}
-
-\begin{frame}{Recommending What Video to Watch Next: A Multitask Ranking System \cite{RANKING}}
-
-\begin{center}
-\includegraphics[scale=0.25]{images/multitask.png}
-\end{center}
-
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star\star\star$
-\end{tabular}
-
-\end{frame}
-
-\section{Истории успеха: контент}
-
-\begin{frame}{Истории успеха: контент}
-
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=Как оставить след в науке]
+Вопросы
 \begin{itemize}
-\item Решить проблему холодного старта, хитро обучив эмбединги
+\item Как построить граф?
+\item Как агрегировать информацию от соседей?
+\item Как сформировать финальное представление пользователей и айтемов?
 \end{itemize}
-\end{tcolorbox}
 
 \end{frame}
 
-\begin{frame}{PinSage: A new graph convolutional neural network for web-scale recommender systems \cite{PINSAGE}}
+\begin{frame}{GNN на последовательностях айтемов}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\includegraphics[scale=0.25]{images/gnn-seq.png}
+\includegraphics[scale=0.25]{images/gnn-seq-graph.png}
+\end{center}
+\end{column}
+
+\begin{column}{0.4\textwidth}
+Вопросы
+\begin{itemize}
+\item Как построить граф?
+\item Как сагрегировать информацию всей последовательности?
+\end{itemize}
+\end{column}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{GNN в задачах с соцсетью}
+
+\begin{center}
+\includegraphics[scale=0.3]{images/gnn-social.png}
+\end{center}
+
+Вопросы
+\begin{itemize}
+\item Комбинировать ли граф CF с графом друзей?
+\item Разный ли вес у друзей?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{GNN в задачах с графом знаний}
+
+PinSage: A new graph convolutional neural network for web-scale recommender systems \cite{PINSAGE}
 
 \begin{center}
 \includegraphics[scale=0.3]{images/pinnersage.png}
 \end{center}
 
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star\star$ \\
-Полезность & $\star\star\star$
-\end{tabular}
-
 \end{frame}
 
-\begin{frame}{CB2CF: A Neural Multiview Content-to-Collaborative Filtering Model for Completely Cold Item Recommendations	 \cite{CB2CF}}
-
+\begin{frame}{А вообще работает?}
+LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation
+ \cite{LIGHTGCL}
+ 
 \begin{center}
-\includegraphics[scale=0.4]{images/cf2cf.png}
+\includegraphics[scale=0.3]{images/lightgcl.png}
 \end{center}
 
-\begin{tabular}{l l}
-Интересность & $\star\star\star\star$ \\
-Полезность & $\star\star\star\star\star$
-\end{tabular}
-
 \end{frame}
 
-\section{Проблемы нейрорекомендеров}
-
-\begin{frame}{Проблема воспроизводимости \cite{PROGRESS}}
-
-\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-Многие результаты из статей невозможно воспроизвести
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-Некоторые новые алгоритмы работают хуже, чем затюненные бейзлайны
-\end{tcolorbox}
-
-\begin{columns}
-\begin{column}{0.45\textwidth} 
-\begin{tcolorbox}[colback=gray!5,colframe=gray!80,title=]
-The CMN method was presented at SIGIR 18 and combines memory networks and neural attention mechanisms with latent factor and neighborhood models
-\end{tcolorbox}
-\end{column}
-\begin{column}{0.45\textwidth}
+\begin{frame}
+ 
 \begin{center}
-\includegraphics[scale=0.25]{images/progress.png}
+\includegraphics[scale=0.3]{images/pwc.png}
 \end{center}
-\end{column}
-\end{columns}
+
+\url{https://paperswithcode.com/sota/recommendation-systems-on-gowalla}
 
 \end{frame}
 
-\begin{frame}{Простые бейзлайны}
-
-SLIM \cite{SLIM} / EASE \cite{EASE}
-\[
-\hat A = A W,
-\]
-где 
-\begin{itemize}
-\item $A$ -- матрица интеракций
-\item $\hat A$ -- предсказанные интеракции
-\item $W_{:,j}$ -- колонка весов агрегации для  $j$ айтема ($W_{ij} \geq 0$ (SLIM), $W_{jj} = 0$).
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}{Проблема сравнений \cite{DALMANN}}
-
-\begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-Результат сравнения может поменяться на обратный в зависимости от того, по какой метрике сравнивають
-\end{tcolorbox}
-
+\begin{frame}
+ 
 \begin{center}
-\includegraphics[scale=0.25]{images/compare.png}
+\includegraphics[scale=0.3]{images/lightgcl-exp.png}
 \end{center}
 
 \end{frame}
@@ -431,23 +347,32 @@ SLIM \cite{SLIM} / EASE \cite{EASE}
 \begin{frame}{Итоги}
 
 \begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-Нейросетевые модели могут заменить любой компонент рекомендательной системы: отборщик кандидатов, ранкер, item2item.
-\end{tcolorbox}
-
-\begin{tcolorbox}[colback=info!5,colframe=info!80,title=]
-Нейросети помогают добавить inductive bias в рекомендательные модели.
+Архитектура GNN хорошо ложится на формулировку рекомендательной задачи.
 \end{tcolorbox}
 
 \begin{tcolorbox}[colback=warn!5,colframe=warn!80,title=]
-Нейросетевой подход не гарантирует выигрыша -- к выбору модели нужно подходить прагматично.
+Хотя это популярное направление в исследовательских статьях, польза от применения на продакшене пока что под вопросом.
 \end{tcolorbox}
 
 \end{frame}
 
-\begin{frame}
-\begin{center}
-\includegraphics[scale=1.0]{images/bye.jpeg}
-\end{center}
+\begin{frame}{До следующего раза}
+
+\begin{columns}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+                \includegraphics[scale=0.25]{images/bye.png}
+   \end{center}
+\end{column}
+\begin{column}{0.45\textwidth}
+   \begin{center}
+                \url{https://t.me/mlvok}
+
+                \includegraphics[scale=0.5]{images/tgqr.png}
+   \end{center}
+\end{column}
+\end{columns}
+
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Литература}
