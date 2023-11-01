@@ -14,7 +14,6 @@ class Contextual(Recommender):
         self.fallback = Random(tracks_redis)
         self.catalog = catalog
 
-    # TODO Seminar 5 step 1: Implement contextual recommender based on NN predictions
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
         # 1. Get previous track from redis DB, fall back to Random if there is no one
 

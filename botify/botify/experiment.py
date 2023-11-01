@@ -57,7 +57,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    # TODO Seminar 5 step 2: Configure CONTEXTUAL A/B experiment
+    # TODO Seminar 7 step 2: Configure GCF A/B experiment
 
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)

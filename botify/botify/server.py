@@ -27,6 +27,7 @@ api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
+# TODO Seminar 7 step 1: Add new data source with GCF candidates and setup connection
 recommendations_ub_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
 recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
@@ -74,7 +75,7 @@ class NextTrack(Resource):
 
         treatment = Experiments.CONTEXTUAL.assign(user)
         fallback = Random(tracks_redis.connection)
-        # TODO Seminar 5 step 3: Wire CONTEXTUAL A/B experiment
+        # TODO Seminar 7 step 3: Wire GCF A/B experiment
         if treatment == Treatment.T1:
             recommender = Contextual(tracks_redis.connection, catalog)
         else:
