@@ -25,23 +25,29 @@ app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
 api = Api(app)
 
+# TODO Seminar 8 step 3: Create redis DB with tracks with diverse recommendations
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
-# TODO Seminar 7 step 1: Add new data source with GCF candidates and setup connection
 recommendations_ub_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
-recommendations_gcf_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
 recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
+recommendations_ncf_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_NCF")
+recommendations_gcf_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
+tracks_with_diverse_recs_redis = Redis(app, config_prefix="REDIS_TRACKS_WITH_DIVERSE_RECS")
 
 data_logger = DataLogger(app)
 
-catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
-catalog.upload_tracks(tracks_redis.connection)
+# TODO Seminar 8 step 4: Upload tracks with diverse recommendations to redis DB
+catalog = Catalog(app).load(app.config["TRACKS_CATALOG"], app.config["TRACKS_WITH_DIVERSE_RECS_CATALOG"])
+catalog.upload_tracks(tracks_redis.connection, tracks_with_diverse_recs_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 catalog.upload_recommendations(
     recommendations_ub_redis.connection, "RECOMMENDATIONS_UB_FILE_PATH"
 )
 catalog.upload_recommendations(
     recommendations_redis.connection, "RECOMMENDATIONS_FILE_PATH"
+)
+catalog.upload_recommendations(
+    recommendations_ncf_redis.connection, "RECOMMENDATIONS_NCF_FILE_PATH"
 )
 catalog.upload_recommendations(
     recommendations_gcf_redis.connection, "RECOMMENDATIONS_GCF_FILE_PATH"
@@ -77,13 +83,27 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.GCF.assign(user)
+        # TODO Seminar 8 step 6: Wire RECOMMENDERS A/B experiment
         fallback = Random(tracks_redis.connection)
-        # TODO Seminar 7 step 3: Wire GCF A/B experiment
+        treatment = Experiments.RECOMMENDERS.assign(user)
         if treatment == Treatment.T1:
-            recommender = Indexed(recommendations_gcf_redis.connection, catalog, fallback)
-        else:
+            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+        elif treatment == Treatment.T2:
+            recommender = TopPop(top_tracks[:100], fallback)
+        elif treatment == Treatment.T3:
+            recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
+        elif treatment == Treatment.T4:
+            recommender = Indexed(recommendations_redis, catalog, fallback)
+        elif treatment == Treatment.T5:
+            recommender = Indexed(recommendations_ncf_redis.connection, catalog, fallback)
+        elif treatment == Treatment.T6:
             recommender = Contextual(tracks_redis.connection, catalog)
+        elif treatment == Treatment.T7:
+            recommender = Indexed(recommendations_gcf_redis.connection, catalog, fallback)
+        elif treatment == Treatment.T8:
+            recommender = Contextual(tracks_with_diverse_recs_redis.connection, catalog)
+        else:
+            recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 

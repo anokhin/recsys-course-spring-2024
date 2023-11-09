@@ -11,6 +11,9 @@ class Treatment(Enum):
     T4 = 4
     T5 = 5
     T6 = 6
+    T7 = 7
+    T8 = 8
+    T9 = 9
 
 
 class Split(Enum):
@@ -19,6 +22,7 @@ class Split(Enum):
     FOUR_WAY = 4
     FIVE_WAY = 5
     SEVEN_WAY = 7
+    NINE_WAY = 9
 
 
 class Experiment:
@@ -57,7 +61,7 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    # TODO Seminar 7 step 2: Configure GCF A/B experiment
+    # TODO Seminar 8 step 5: Configure RECOMMENDERS A/B experiment
 
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
@@ -67,6 +71,7 @@ class Experiments:
     NCF = Experiment("NCF", Split.HALF_HALF)
     CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
     GCF = Experiment("GCF", Split.HALF_HALF)
+    RECOMMENDERS = Experiment("RECOMMENDERS", Split.NINE_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.GCF]
+        self.experiments = [Experiments.RECOMMENDERS]

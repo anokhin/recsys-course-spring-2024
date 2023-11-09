@@ -24,7 +24,7 @@ class Contextual(Recommender):
         # 2. Get recommendations for previous track, fall back to Random if there is no recommendations
         previous_track = self.catalog.from_bytes(previous_track)
         recommendations = previous_track.recommendations
-        if recommendations is None:
+        if not recommendations:
             return self.fallback.recommend_next(user, prev_track, prev_track_time)
 
         # 3. Get random track from the recommendation list
