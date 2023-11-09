@@ -29,6 +29,7 @@ tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 # TODO Seminar 7 step 1: Add new data source with GCF candidates and setup connection
 recommendations_ub_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
+recommendations_gcf_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
 recommendations_redis = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
 data_logger = DataLogger(app)
@@ -41,6 +42,9 @@ catalog.upload_recommendations(
 )
 catalog.upload_recommendations(
     recommendations_redis.connection, "RECOMMENDATIONS_FILE_PATH"
+)
+catalog.upload_recommendations(
+    recommendations_gcf_redis.connection, "RECOMMENDATIONS_GCF_FILE_PATH"
 )
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
@@ -73,13 +77,13 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.CONTEXTUAL.assign(user)
+        treatment = Experiments.GCF.assign(user)
         fallback = Random(tracks_redis.connection)
         # TODO Seminar 7 step 3: Wire GCF A/B experiment
         if treatment == Treatment.T1:
-            recommender = Contextual(tracks_redis.connection, catalog)
+            recommender = Indexed(recommendations_gcf_redis.connection, catalog, fallback)
         else:
-            recommender = Indexed(recommendations_ub_redis.connection, catalog, fallback)
+            recommender = Contextual(tracks_redis.connection, catalog)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
