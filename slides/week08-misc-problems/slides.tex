@@ -104,6 +104,13 @@
 
 \begin{frame}{Два подхода к разнообразию}
 
+\begin{itemize}
+\item {\bf Разнообразие для exploration} \\
+помогает пользователям находить новые айтемы, а рекомендеру собирать данные
+\item {\bf Разнообразие для utility} \\
+помогает убирать избыточные айтемы
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}{Набираем айтемы с разными аспектами}
@@ -239,9 +246,6 @@ Learning To Rank Diversely At Airbnb \cite{AIRBNB2}
 \item Контролируемость: позволить пользователю исправить ошибки
 \item Доверие: убедить пользователя, что система работает правильно
 \item Убеждение: мотивировать пользователя к покупке
-\item Полезность: помочь пользователю принять правильное решение
-\item Эффективность: помочь пользователю принять решение быстро
-\item Удовольствие: сделать приятно пользователю
 \end{enumerate}
 
 \end{frame}
@@ -369,6 +373,14 @@ r(j, e, x) = \sigma(\theta_{global} + \theta_{j} \times 1_j + \theta_e \times 1_
 
 \end{frame}
 
+\begin{frame}{Смещения в рекомендациях \cite{BIAS}}
+
+\begin{center}
+\includegraphics[scale=0.2]{images/bias.png}
+\end{center}
+
+\end{frame}
+
 \begin{frame}{Пример self-selection bias}
 
 \begin{center}
@@ -378,14 +390,6 @@ r(j, e, x) = \sigma(\theta_{global} + \theta_{j} \times 1_j + \theta_e \times 1_
 \[
 R(\hat Y) = \frac{1}{U I} \sum_u \sum_i \delta_{ui} (Y, \hat Y), \quad R_{naive}(\hat Y) = \frac{1}{N} \sum_{(u,i) \in D} \delta_{ui}(Y, \hat Y)
 \]
-
-\end{frame}
-
-\begin{frame}{Смещения в рекомендациях \cite{BIAS}}
-
-\begin{center}
-\includegraphics[scale=0.2]{images/bias.png}
-\end{center}
 
 \end{frame}
 
@@ -421,6 +425,8 @@ E_D [R_{IPS}(\hat Y | P)] = \frac{1}{U I} \sum_u \sum_i E_D\left[ \frac{\delta_{
 \begin{center}
 \includegraphics[scale=0.2]{images/multitask.png}
 \end{center}
+
+{\bf Идея.} При обучении модель ``видит'' признак-позицию айтема, а при инференсе признак зануляется. 
 
 \end{frame}
 
