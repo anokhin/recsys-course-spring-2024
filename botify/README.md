@@ -45,7 +45,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"track":10,"time":0.3}'  h
 ```
 Скачиваем логи пользовательских сессии с контейнера
 ```
-docker cp botify_recommender_n:/app/log/ /tmp/
+docker cp botify-recommender-n:/app/log/ /tmp/
 ```
 Мониторим загрузку хостов
 ```

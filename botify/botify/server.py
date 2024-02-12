@@ -10,7 +10,9 @@ from flask_restful import Resource, Api, abort, reqparse
 from gevent.pywsgi import WSGIServer
 
 from botify.data import DataLogger, Datum
+from botify.experiment import Experiments, Treatment
 from botify.recommenders.random import Random
+from botify.recommenders.sticky_artist import StickyArtist
 from botify.recommenders.toppop import TopPop
 from botify.track import Catalog
 
@@ -22,11 +24,12 @@ app.config.from_file("config.json", load=json.load)
 api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
-artists_redis = Redis(app, config_prefix="REDIS_ARTIST")  # TODO Seminar 1: step 1
+artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
+catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
@@ -59,7 +62,14 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        recommender = Random(tracks_redis.connection)
+        treatment = Experiments.STICKY_ARTIST.assign(user)
+        if treatment == Treatment.T1:
+            recommender = StickyArtist(
+                tracks_redis.connection, artists_redis.connection, catalog
+            )
+        else:
+            recommender = Random(tracks_redis.connection)
+
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
         data_logger.log(

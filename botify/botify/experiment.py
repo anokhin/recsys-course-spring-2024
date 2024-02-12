@@ -61,8 +61,8 @@ class Experiments:
     A static container for all the existing experiments.
     """
 
-    # TODO Seminar 1: step 4
     AA = Experiment("AA", Split.HALF_HALF)
+    STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.HALF_HALF)
 
     def __init__(self):
-        self.experiments = [Experiments.AA]
+        self.experiments = [Experiments.AA, Experiments.STICKY_ARTIST]
