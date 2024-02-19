@@ -47,6 +47,10 @@ curl -H "Content-Type: application/json" -X POST -d '{"track":10,"time":0.3}'  h
 ```
 docker cp botify-recommender-n:/app/log/ /tmp/
 ```
+Скачиваем логи пользовательских сессий со всех контейнеров
+```
+python dataclient.py --recommender N log2local ~/Desktop/data
+```
 Мониторим загрузку хостов
 ```
 docker stats botify-recommender-1 botify-nginx-1 redis-container

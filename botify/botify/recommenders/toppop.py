@@ -1,6 +1,9 @@
 import json
 
 from typing import List
+
+import numpy
+
 from .recommender import Recommender
 
 
@@ -15,5 +18,7 @@ class TopPop(Recommender):
         self.fallback = fallback
 
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
-        # TODO Seminar 2 step 2.2
+        if self.top_tracks:
+            return int(numpy.random.choice(self.top_tracks, 1)[0])
+
         return self.fallback.recommend_next(user, prev_track, prev_track_time)
