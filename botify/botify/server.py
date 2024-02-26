@@ -26,6 +26,7 @@ api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
+# TODO Seminar 3 step 2.1: Create new database recommendations_ub
 
 data_logger = DataLogger(app)
 
@@ -63,6 +64,7 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
+        # TODO Seminar 3 step 3.2
         fallback = Random(tracks_redis)
         treatment = Experiments.TOP_POP.assign(user)
         if treatment == Treatment.T1:

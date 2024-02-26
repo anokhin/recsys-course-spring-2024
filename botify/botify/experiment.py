@@ -64,6 +64,7 @@ class Experiments:
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.FOUR_WAY)
     TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
+    # TODO Seminar 3 step 3.1
 
     def __init__(self):
-        self.experiments = [Experiments.TOP_POP]
+        self.experiments = []
