@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 import time
 from dataclasses import asdict
 from datetime import datetime
@@ -68,9 +69,12 @@ class NextTrack(Resource):
 
         fallback = Random(tracks_redis)
 
-        treatment = Experiments.USER_BASED.assign(user)
-        if treatment == Treatment.T1:
-            recommender = Indexed(recommendations_ub.connection, catalog, fallback)
+        # treatment = Experiments.USER_BASED.assign(user)
+        # if treatment == Treatment.T1:
+        if random.random() < 0.1:
+            recommender = fallback
+        elif random.random() < 0.1:
+            recommender = TopPop(top_tracks[:100], fallback)
         else:
             recommender = StickyArtist(
                 tracks_redis.connection, artists_redis.connection, catalog

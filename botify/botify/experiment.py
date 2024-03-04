@@ -67,4 +67,4 @@ class Experiments:
     USER_BASED = Experiment("USER_BASED", Split.HALF_HALF)
 
     def __init__(self):
-        self.experiments = [Experiments.USER_BASED]
+        self.experiments = []
