@@ -57,10 +57,10 @@ class Catalog:
         self.app.logger.info(f"Uploaded {j + 1} artists")
 
     def upload_recommendations(self, redis, redis_config_key):
-        self.app.logger.info(
-            f"Uploading recommendations from {redis_config_key} to redis"
-        )
         recommendations_file_path = self.app.config[redis_config_key]
+        self.app.logger.info(
+            f"Uploading recommendations from {recommendations_file_path} to redis"
+        )
         j = 0
         with open(recommendations_file_path) as rf:
             for line in rf:

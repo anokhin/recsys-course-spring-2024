@@ -1,6 +1,5 @@
 import json
 import logging
-import random
 import time
 from dataclasses import asdict
 from datetime import datetime
@@ -11,7 +10,6 @@ from flask_restful import Resource, Api, abort, reqparse
 from gevent.pywsgi import WSGIServer
 
 from botify.data import DataLogger, Datum
-
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.Indexed import Indexed
 from botify.recommenders.random import Random
@@ -73,14 +71,11 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        fallback = Random(tracks_redis)
-
-        # treatment = Experiments.USER_BASED.assign(user)
-        # if treatment == Treatment.T1:
-        if random.random() < 0.1:
-            recommender = fallback
-        elif random.random() < 0.1:
-            recommender = TopPop(top_tracks[:100], fallback)
+        treatment = Experiments.PERSONALIZED.assign(user)
+        if treatment == Treatment.T1:
+            recommender = Indexed(
+                recommendations_lfm.connection, catalog, Random(tracks_redis)
+            )
         else:
             recommender = StickyArtist(
                 tracks_redis.connection, artists_redis.connection, catalog
