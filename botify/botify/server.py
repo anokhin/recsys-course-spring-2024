@@ -29,13 +29,19 @@ api = Api(app)
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
 recommendations_ub = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
+recommendations_lfm = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
-catalog.upload_recommendations(recommendations_ub.connection)
+catalog.upload_recommendations(
+    recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+)
+catalog.upload_recommendations(
+    recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
+)
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
