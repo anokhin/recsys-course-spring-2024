@@ -20,7 +20,7 @@ catalog.upload_recommendations(recommendations_example.connection, "RECOMMENDATI
 
 #### настраиваем A/B эксперимент
 
-в` botify/experiment.py`, class Experiment
+в ` botify/experiment.py`, class Experiment
 
     создаем новый эксперимент, включаем его в init
 
@@ -28,7 +28,7 @@ catalog.upload_recommendations(recommendations_example.connection, "RECOMMENDATI
 
     `treatment = Experiments.<exp_name>.assign(user)`
 
-	в зависимости от treatment назначаем рекоммендер
+    в зависимости от treatment назначаем рекоммендер
 
 #### запускаем рекоммендер
 
@@ -52,7 +52,7 @@ python -m sim.run --episodes 1000 --config config/env.yml multi --processes 4
 
 ```bash
 cd ../script
-python dataclient.py --recommender 2 log2local /Users/nadys/Desktop/recsys/experiments/<exp_name>
+python dataclient.py --recommender 2 log2local /Users/nadys/recsys/experiments/<exp_name>
 ```
 
 #### запускаем ноутбук Week1Seminar
