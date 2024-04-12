@@ -1,0 +1,10 @@
+name: spbu.recsys.hw2.jupyter
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - ipykernel
+  - jinja2

@@ -12,6 +12,7 @@ from gevent.pywsgi import WSGIServer
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.Indexed import Indexed
+from botify.recommenders.IndexedNew import IndexedNew
 from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
@@ -90,23 +91,19 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
-
-        if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        group = Experiments.HW2.assign(user)
+        if group == Treatment.T1:
+            recommender = IndexedNew(
+                recommendations_dssm.connection,
+                fallback=Random(tracks_redis.connection),
+            )
         else:
-            recommender = Random(tracks_redis.connection)
-
+            recommender = Indexed(
+                recommendations_dssm.connection,
+                catalog,
+                Random(tracks_redis.connection),
+            )
+        
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
         data_logger.log(
