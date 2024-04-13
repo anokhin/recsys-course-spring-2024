@@ -1,5 +1,3 @@
-import random
-
 from .recommender import Recommender
 
 
@@ -17,10 +15,7 @@ class Custom(Recommender):
 
             if prev_track in lst:
                 positivity = prev_track_time >= 0.77
-
-                if positivity:
-                    return lst[(lst.index(prev_track) + 1) % len(lst)]
-                return lst[(lst.index(prev_track) + 2) % len(lst)]
+                return lst[(lst.index(prev_track) + 1 + (1 if positivity else 0)) % len(lst)]
 
             return lst[0]
 
