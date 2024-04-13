@@ -12,6 +12,7 @@ from gevent.pywsgi import WSGIServer
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
 from botify.recommenders.Indexed import Indexed
+from botify.recommenders.custom import Custom
 from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
@@ -104,8 +105,12 @@ class NextTrack(Resource):
             recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
         elif treatment == Treatment.T6:
             recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        elif treatment == Treatment.T7:
+            # Custom recommender
+            recommender = Custom(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
         else:
-            recommender = Random(tracks_redis.connection)
+            # Baseline: DSSM (T4)
+            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
