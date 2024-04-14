@@ -10,7 +10,7 @@
 
 В файле `custom.py` реализовал класс `CustomRecommender`. Мы просто берём случайны трек из рекомендаций от DSSM
 
-Если слушатель прослушал `80%` трека из топ-100, порекомендуем ему трек от DSSM который есть в топ-100, иначе просто случайный трек от DSSM
+Просто идём по рекомендациям от DSSM. Если слушатель прослушал `80%` трека из топ-100, порекомендуем ему трек от DSSM который есть в топ-100.
 
 В файле `server.py` добавили наш рекомендер к остальным
 
@@ -34,7 +34,7 @@ docker-compose up -d --build --force-recreate --scale recommender=1
 ```shell
 # Запускаем симуляцию
 cd ../sim
-python -m sim.run --episodes 4000 --config config/env.yml single --recommender remote --seed 31337
+python -m sim.run --episodes 2000 --config config/env.yml single --recommender remote --seed 31337
 cd ..
 ```
 

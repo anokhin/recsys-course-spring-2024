@@ -109,7 +109,7 @@ class NextTrack(Resource):
             recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
         elif treatment == Treatment.T7:
             # Custom recommender DSSM with toptracks feature
-            recommender = CustomRecommender(recommendations_dssm.connection, catalog, catalog.top_tracks[:100], Random(tracks_redis.connection))
+            recommender = CustomRecommender(recommendations_dssm.connection, catalog, catalog.top_tracks[:1000], Random(tracks_redis.connection))
         else:
             recommender = Random(tracks_redis.connection)
 

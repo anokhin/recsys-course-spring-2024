@@ -23,8 +23,12 @@ class CustomRecommender(Recommender):
                 for track in self.top_tracks:
                     if track in list_recommendations:
                         rec_top.append(track)
-                if rec_top and liked_top:
+                if len(rec_top) > 5 and liked_top:
                     return int(numpy.random.choice(rec_top, 1)[0])
+
+            if prev_track in list_recommendations:
+                next_id = (list_recommendations.index(prev_track) + 1) % len(list_recommendations)
+                return list_recommendations[next_id]
 
             random.shuffle(list_recommendations)
             return list_recommendations[0]
