@@ -20,7 +20,7 @@
 Данные получены благодаря симуляции 10000 итерации.
 Для быстроты исполнения теста данные лежат в (/script/cache)
 
-![Результат](results.png) где T7 – реализованный алгоритм. T4 – наш baseline
+![Результат](results.png) Где T7 – реализованный алгоритм, T4 – наш baseline. Вывел все рекомендеры для сравнения как предлагалось в предпоследней лекции.
 
 ## 4. Инструкции
 
@@ -43,5 +43,3 @@ python -m sim.run --episodes 10000 --config config/env.yml single --recommender 
 python dataclient.py --recommender 2 log2local ./cache/
 ```
 4. Посмотреть результаты в [Week1Seminar.ipynb](jupyter/Week1Seminar.ipynb)
-Вывел все рекомендеры для сравнения как предлагалось в предпоследней лекции.
-
