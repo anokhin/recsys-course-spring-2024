@@ -71,6 +71,7 @@ class Experiments:
     GCF = Experiment("GCF", Split.HALF_HALF)
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
     ALL = Experiment("ALL", Split.SEVEN_WAY)
+    HW = Experiment("HW", Split.FOUR_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.HW]

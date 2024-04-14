@@ -23,6 +23,8 @@ class Catalog:
         self.app = app
         self.tracks = []
         self.top_tracks = []
+        self.first_tracks = dict()
+        self.sessions = dict()
 
     def load(self, catalog_path):
         self.app.logger.info(f"Loading tracks from {catalog_path}")
