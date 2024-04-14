@@ -17,6 +17,8 @@ from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
+from botify.recommenders.contextualIndexed import ContextualIndexed
+from botify.recommenders.IndexedPro import IndexedPro
 
 root = logging.getLogger()
 root.setLevel("INFO")
@@ -93,19 +95,30 @@ class NextTrack(Resource):
         treatment = Experiments.ALL.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+            recommender = ContextualIndexed(recommendations_div.connection, recommendations_lfm.connection,
+                                            artists_redis.connection, tracks_redis.connection, catalog,
+                                            Random(tracks_redis.connection), 0.65)
         elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
+            recommender = ContextualIndexed(recommendations_div.connection, recommendations_lfm.connection,
+                                            artists_redis.connection, tracks_redis.connection, catalog,
+                                            Random(tracks_redis.connection), 0.65, True)
         elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
+            recommender = ContextualIndexed(recommendations_div.connection, recommendations_lfm.connection,
+                                            artists_redis.connection, tracks_redis.connection, catalog,
+                                            TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection)), 0.85,
+                                            True)
         elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+            recommender = IndexedPro(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
         elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
+            recommender = ContextualIndexed(recommendations_div.connection, recommendations_dssm.connection,
+                                            artists_redis.connection, tracks_redis.connection, catalog,
+                                            Random(tracks_redis.connection), 0.65, True)
         elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = ContextualIndexed(recommendations_div.connection, recommendations_dssm.connection,
+                                            artists_redis.connection, tracks_redis.connection, catalog,
+                                            Random(tracks_redis.connection), 0.7, True)
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
