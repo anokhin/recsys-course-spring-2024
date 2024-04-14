@@ -16,6 +16,7 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.contextualmod import ContextualMod
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -83,7 +84,6 @@ class Track(Resource):
         else:
             abort(404, description="Track not found")
 
-
 class NextTrack(Resource):
     def post(self, user: int):
         start = time.time()
@@ -104,6 +104,8 @@ class NextTrack(Resource):
             recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
         elif treatment == Treatment.T6:
             recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        elif treatment == Treatment.T7:
+            recommender = ContextualMod(recommendations_div.connection, catalog, Random(tracks_redis.connection), recommendations_dssm.connection)
         else:
             recommender = Random(tracks_redis.connection)
 
