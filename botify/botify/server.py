@@ -14,6 +14,7 @@ from botify.experiment import Experiments, Treatment
 from botify.recommenders.Indexed import Indexed
 from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
+from botify.recommenders.Custom import Custom
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
@@ -90,22 +91,34 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
+        treatment = Experiments.HW2.assign(user)
+
+        # if treatment == Treatment.T1:
+        #     recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+        # elif treatment == Treatment.T2:
+        #     recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
+        # elif treatment == Treatment.T3:
+        #     recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T4:
+        #     recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T5:
+        #     recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T6:
+        #     recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        # else:
+        #     recommender = Random(tracks_redis.connection)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = Custom(
+                recommendations_dssm.connection,
+                recommendations_div.connection,
+                recommendations_lfm.connection,
+                catalog,
+                fallback=Random(tracks_redis.connection)
+            )
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
@@ -148,5 +161,5 @@ api.add_resource(LastTrack, "/last/<int:user>")
 app.logger.info(f"Botify service stared")
 
 if __name__ == "__main__":
-    http_server = WSGIServer(("", 5001), app)
+    http_server = WSGIServer(("", 5002), app)
     http_server.serve_forever()
