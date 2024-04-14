@@ -67,10 +67,12 @@ class Experiments:
     USER_BASED = Experiment("USER_BASED", Split.HALF_HALF)
     PERSONALIZED = Experiment("PERSONALIZED", Split.HALF_HALF)
     DSSM = Experiment("DSSM", Split.HALF_HALF)
+    WIN = Experiment("WIN", Split.HALF_HALF)
+    RANDOM = Experiment("RANDOM", Split.HALF_HALF)
     CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
     GCF = Experiment("GCF", Split.HALF_HALF)
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
     ALL = Experiment("ALL", Split.SEVEN_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.WIN]
