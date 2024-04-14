@@ -16,6 +16,9 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+
+from botify.recommenders.custom import CustomRecommender
+
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -104,6 +107,9 @@ class NextTrack(Resource):
             recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
         elif treatment == Treatment.T6:
             recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        elif treatment == Treatment.T7:
+            # Custom recommender DSSM with toptracks feature
+            recommender = CustomRecommender(recommendations_dssm.connection, catalog, catalog.top_tracks[:100], Random(tracks_redis.connection))
         else:
             recommender = Random(tracks_redis.connection)
 
