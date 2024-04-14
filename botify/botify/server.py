@@ -16,6 +16,7 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.hw import HW
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -90,22 +91,28 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
-
+        treatment = Experiments.HW.assign(user)
+        # treatment = Experiments.HW.assign(user)
+        
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = HW(tracks_redis.connection, artists_redis.connection, catalog, recommendations_dssm.connection, recommendations_div.connection)
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+
+        # if treatment == Treatment.T1:
+        #     recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
+        # elif treatment == Treatment.T2:
+        #     recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
+        # elif treatment == Treatment.T3:
+        #     recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T4:
+        #     recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T5:
+        #     recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
+        # elif treatment == Treatment.T6:
+        #     recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+        # else:
+        #     recommender = Random(tracks_redis.connection)
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 

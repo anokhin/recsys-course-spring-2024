@@ -40,7 +40,7 @@
 6. Запуск симулятора в режиме "трафика" в многопоточном режиме.
    Многопоточный режим ускоряет сбор данных.
    ```
-   python -m sim.run --episodes 1000 --config config/env.yml multi --processes 4
+   python -m sim.run --episodes 1000 --config config/env.yml multi --processes 10
    ```   
    
 ## Идеи на будущее

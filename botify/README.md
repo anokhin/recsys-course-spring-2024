@@ -49,6 +49,7 @@ docker cp botify-recommender-n:/app/log/ /tmp/
 ```
 Скачиваем логи пользовательских сессий со всех контейнеров
 ```
+python dataclient.py --recommender 2 log2local /home/uyra/Desktop/recsys-course-spring-2024/dataForSem1
 python dataclient.py --recommender N log2local ~/Desktop/data
 ```
 Мониторим загрузку хостов
