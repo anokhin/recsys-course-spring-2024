@@ -22,6 +22,7 @@ class Split(Enum):
     FOUR_WAY = 4
     FIVE_WAY = 5
     SEVEN_WAY = 7
+    EIGHT_WAY = 8
     NINE_WAY = 9
 
 
@@ -70,7 +71,8 @@ class Experiments:
     CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
     GCF = Experiment("GCF", Split.HALF_HALF)
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
-    ALL = Experiment("ALL", Split.SEVEN_WAY)
+    ALL = Experiment("ALL", Split.EIGHT_WAY)
+    BETTER_DSSM = Experiment("BETTER_DSSM", Split.HALF_HALF)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.BETTER_DSSM]

@@ -11,7 +11,6 @@ faiss-cpu==1.7.1.post2
 Flask==2.0.1
 Flask-And-Redis==1.0.0
 Flask-RESTful==0.3.9
-gym==0.20.0
 idna==3.2
 importlib-metadata==4.8.1
 itsdangerous==2.0.1
@@ -29,10 +28,9 @@ PyNaCl==1.4.0
 python-dateutil==2.8.2
 python-json-logger==2.0.2
 pytz==2021.1
-PyYAML==5.4.1
 redis==3.5.3
 requests==2.26.0
-scipy==1.7.1
+scipy==1.7.2 # was 1.7.1
 scp==0.14.1
 six==1.16.0
 style==1.1.6
@@ -45,3 +43,8 @@ websocket-client==1.2.1
 Werkzeug==2.0.1
 zipp==3.5.0
 gevent==22.10.2
+setuptools==65.6.0
+pip==21
+wheel==0.38.0
+PyYAML==5.4.1
+# gym==0.20.0
