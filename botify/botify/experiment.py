@@ -70,7 +70,8 @@ class Experiments:
     CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
     GCF = Experiment("GCF", Split.HALF_HALF)
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
+    DSSMVSCUSTOM = Experiment("DSSMVSCUSTOM", Split.HALF_HALF)
     ALL = Experiment("ALL", Split.SEVEN_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.DSSMVSCUSTOM]
