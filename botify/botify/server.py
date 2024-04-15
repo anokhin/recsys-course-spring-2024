@@ -16,6 +16,7 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.eps_greedy import Epsilon_Greedy
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -39,26 +40,26 @@ data_logger = DataLogger(app)
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
-catalog.upload_recommendations(
-    recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
-)
+# catalog.upload_recommendations(
+#     recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
+# )
 catalog.upload_recommendations(
     recommendations_dssm.connection, "RECOMMENDATIONS_DSSM_FILE_PATH"
 )
-catalog.upload_recommendations(
-    recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
-    key_object='track', key_recommendations='recommendations'
-)
-catalog.upload_recommendations(
-    recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
-    key_object='track', key_recommendations='recommendations'
-)
+# catalog.upload_recommendations(
+#     recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
+# catalog.upload_recommendations(
+#     recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
@@ -85,27 +86,21 @@ class Track(Resource):
 
 
 class NextTrack(Resource):
+    def __init__(self):
+        self.greedy_recomender = Epsilon_Greedy(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+        self.dssm_recomender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+
     def post(self, user: int):
         start = time.time()
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
+        treatment = Experiments.EPSILON_GREEDY.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = self.greedy_recomender
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = self.dssm_recomender
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
