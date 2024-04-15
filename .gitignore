@@ -31,3 +31,5 @@ botify/log/*
 *.synctex.gz
 *.nav
 *.snm
+
+.vscode/
