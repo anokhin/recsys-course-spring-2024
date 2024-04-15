@@ -11,7 +11,7 @@ from gevent.pywsgi import WSGIServer
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
-from botify.recommenders.Indexed import Indexed
+from botify.recommenders.Indexed import Indexed, IndexedDistr
 from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
@@ -41,29 +41,29 @@ data_logger = DataLogger(app)
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
-# catalog.upload_recommendations(
-#     recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
-# )
-# catalog.upload_recommendations(
-#     recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
-# )
+catalog.upload_recommendations(
+    recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+)
+catalog.upload_recommendations(
+    recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
+)
 catalog.upload_recommendations(
     recommendations_dssm.connection, "RECOMMENDATIONS_DSSM_FILE_PATH"
 )
 catalog.upload_recommendations(
     recommendations_hw.connection, "RECOMMENDATIONS_HW_FILE_PATH"
 )
-# catalog.upload_recommendations(
-#     recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
-#     key_object='track', key_recommendations='recommendations'
-# )
-# catalog.upload_recommendations(
-#     recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
-# )
-# catalog.upload_recommendations(
-#     recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
-#     key_object='track', key_recommendations='recommendations'
-# )
+catalog.upload_recommendations(
+    recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
+    key_object='track', key_recommendations='recommendations'
+)
+catalog.upload_recommendations(
+    recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
+)
+catalog.upload_recommendations(
+    recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
+    key_object='track', key_recommendations='recommendations'
+)
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
@@ -98,8 +98,8 @@ class NextTrack(Resource):
         treatment = Experiments.HW.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = Indexed(
-                recommendations_hw.connection, catalog, Random(tracks_redis)
+            recommender = IndexedDistr(
+                recommendations_dssm.connection, catalog, Random(tracks_redis)
             )
         else:
             recommender = Indexed(
