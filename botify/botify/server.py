@@ -16,6 +16,7 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.best_recommender import BestRecommender
 from botify.track import Catalog
 
 root = logging.getLogger()
@@ -33,6 +34,9 @@ recommendations_dssm = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_DSSM")
 recommendations_contextual = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_CONTEXTUAL")
 recommendations_gcf = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
 recommendations_div = Redis(app, config_prefix="REDIS_TRACKS_WITH_DIVERSE_RECS")
+recommendations_best = Redis(app, config_prefix="REDIS_BEST_RECOMMENDATIONS")
+artist_memory = Redis(app, config_prefix="REDIS_ARTIST_MEMORY")
+track_memory = Redis(app, config_prefix="REDIS_TRACK_MEMORY")
 
 data_logger = DataLogger(app)
 
@@ -58,6 +62,9 @@ catalog.upload_recommendations(
 catalog.upload_recommendations(
     recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
     key_object='track', key_recommendations='recommendations'
+)
+catalog.upload_recommendations(
+    recommendations_best, "BEST_RECOMMENDATIONS_FILE_PATH"
 )
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
@@ -90,22 +97,15 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
+        dssm = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+        best_recommender = BestRecommender(recommendations_best.connection, artist_memory.connection, track_memory.connection, tracks_redis.connection, catalog, dssm)
+
+        treatment = Experiments.BEST_RECOMMENDER.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = best_recommender
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = dssm
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
@@ -137,6 +137,10 @@ class LastTrack(Resource):
                 time.time() - start,
             ),
         )
+
+        track_memory.set(user, catalog.to_bytes([]))
+        artist_memory.set(user, catalog.to_bytes([]))
+
         return {"user": user}
 
 

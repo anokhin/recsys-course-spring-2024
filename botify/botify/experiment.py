@@ -72,5 +72,7 @@ class Experiments:
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
     ALL = Experiment("ALL", Split.SEVEN_WAY)
 
+    BEST_RECOMMENDER = Experiment("BEST_RECOMMENDER", Split.HALF_HALF)
+
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.BEST_RECOMMENDER]
