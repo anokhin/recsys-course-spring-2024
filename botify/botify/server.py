@@ -94,10 +94,13 @@ class NextTrack(Resource):
 
         treatment = Experiments.ALL.assign(user)
         if treatment == Treatment.T1:
+            random = Random(tracks_redis.connection)
+            contextual = Contextual(recommendations_div.connection, catalog, random)
+            top_pop = TopPop(catalog.top_tracks[:100], contextual)
             recommender = TheBestRecommender(
                 recommendations_dssm.connection,
                 catalog,
-                Random(tracks_redis.connection)
+                top_pop
             )
         else:
             recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
