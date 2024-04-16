@@ -60,7 +60,7 @@ class Experiments:
     """
     A static container for all the existing experiments.
     """
-
+    AB = Experiment("AB", Split.HALF_HALF)
     AA = Experiment("AA", Split.HALF_HALF)
     STICKY_ARTIST = Experiment("STICKY_ARTIST", Split.FOUR_WAY)
     TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
@@ -73,4 +73,4 @@ class Experiments:
     ALL = Experiment("ALL", Split.SEVEN_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.AB]
