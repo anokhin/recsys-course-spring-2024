@@ -12,7 +12,7 @@
    ```
 2. В папке `sim`
     ```shell
-   python3 -m sim.run --episodes 5000 --config config/env.yml single --recommender remote --seed 533
+   python3 -m sim.run --episodes 3000 --config config/env.yml single --recommender remote --seed 533
    ```
 3. В корневой папке
     ```shell
