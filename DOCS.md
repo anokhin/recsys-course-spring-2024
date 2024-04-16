@@ -1,11 +1,17 @@
-## Что делать
+## Как сделать свой рекоммендер
 
 #### в ноутбуке обучаем модельку
 
 выгружаем нужные данные в `botify/data/recommendations_example.json`
-в `botify/config.json` уквзываем путь до этого файла
+в `botify/config.json` уквзываем путь до этого файла, прописываем хоаста, порт и DBs
 
-    `"RECOMMENDATIONS_DSSM_FILE_PATH": "./data/recommendations_example.json",`
+```python
+"REDIS_RECOMMENDATIONS_<name>_HOST": "redis",
+"REDIS_RECOMMENDATIONS_<name>_PORT": 6379,
+"REDIS_RECOMMENDATIONS_<name>_DB": <num>,
+...
+"RECOMMENDATIONS_<name>_FILE_PATH": "./data/recommendations_example.json",
+```
 
 подгружаем их в `botify/server.py`
 
@@ -22,7 +28,7 @@ catalog.upload_recommendations(recommendations_example.connection, "RECOMMENDATI
 
 в ` botify/experiment.py`, class Experiment
 
-    создаем новый эксперимент, включаем его в init
+    создаем новый эксперимент, включаем его в`__init__`
 
 в `botify/server.py`, class NextTrack(Resource)
 
@@ -34,7 +40,10 @@ catalog.upload_recommendations(recommendations_example.connection, "RECOMMENDATI
 
 ```bash
 cd botify
-docker-compose up -d --build --force-recreate --scale recommender=2
+docker-compose stop
+docker-compose up -d --build --force-recreate --scale recommender=4
+# проверяем, что сервис жив
+curl http://localhost:5001/
 ```
 
 #### запускаем симулятор
@@ -43,18 +52,18 @@ docker-compose up -d --build --force-recreate --scale recommender=2
 cd ../sim
 conda activate recsys-2024
 # однопоточный
-python -m sim.run --episodes 2000 --config config/env.yml single --recommender remote --seed 31337 
+python -m sim.run --episodes 100 --config config/env.yml single --recommender remote --seed 31337
 # или многопоточный
-python -m sim.run --episodes 1000 --config config/env.yml multi --processes 4
+python -m sim.run --episodes 8000 --config config/env.yml multi --processes 4
 ```
 
 #### скачиваем данные с рекоммендера
 
 ```bash
 cd ../script
-python dataclient.py --recommender 2 log2local /Users/nadys/recsys/experiments/<exp_name>
+python dataclient.py --recommender 2 log2local /Users/nadys/recsys_data/experiments/<exp_name>
 ```
 
-#### запускаем ноутбук Week1Seminar
+#### запускаем ноутбук Week1Seminar (или ab_test.ipynb)
 
 и анализируем результаты A/B эсперимента
