@@ -116,6 +116,9 @@ def download_logs(command_args):
 
     for recommender in recommenders:
         path = os.path.join(local_dir, recommender)
+        for _ in range(100):
+            print('ALARM!!!!')
+        print( f"docker cp {recommender}:{command_args.log_dir} {path}")
         run_docker(
             f"docker cp {recommender}:{command_args.log_dir} {path}", args.echo,
         )
