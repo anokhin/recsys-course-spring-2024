@@ -71,6 +71,10 @@ class Experiments:
     GCF = Experiment("GCF", Split.HALF_HALF)
     DIVERSITY = Experiment("DIVERSITY", Split.HALF_HALF)
     ALL = Experiment("ALL", Split.SEVEN_WAY)
+    
+
+
+    DSSM_IN_CONTROL = Experiment('DSSM_IN_CONTROL', Split.HALF_HALF)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.DSSM_IN_CONTROL]
