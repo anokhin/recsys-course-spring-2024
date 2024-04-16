@@ -1,5 +1,7 @@
 import random
 
+import numpy as np
+
 from .recommender import Recommender
 
 
@@ -17,4 +19,6 @@ class TheBestRecommender(Recommender):
         if prev_track not in recommendations:
             return recommendations[0]
         index = recommendations.index(prev_track)
+        if prev_track_time < 0.3:
+            return recommendations[0]
         return recommendations[(index + 1) % len(recommendations)]
