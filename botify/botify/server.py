@@ -18,6 +18,8 @@ from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.track import Catalog
 
+from botify.recommenders.myIndexed import MyIndexed
+
 root = logging.getLogger()
 root.setLevel("INFO")
 
@@ -27,44 +29,63 @@ api = Api(app)
 
 tracks_redis = Redis(app, config_prefix="REDIS_TRACKS")
 artists_redis = Redis(app, config_prefix="REDIS_ARTIST")
-recommendations_ub = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
-recommendations_lfm = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
+# recommendations_ub = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_UB")
+# recommendations_lfm = Redis(app, config_prefix="REDIS_RECOMMENDATIONS")
 recommendations_dssm = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_DSSM")
-recommendations_contextual = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_CONTEXTUAL")
-recommendations_gcf = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
-recommendations_div = Redis(app, config_prefix="REDIS_TRACKS_WITH_DIVERSE_RECS")
-
+# recommendations_contextual = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_CONTEXTUAL")
+# recommendations_gcf = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
+# recommendations_div = Redis(app, config_prefix="REDIS_TRACKS_WITH_DIVERSE_RECS")
+recommendations_my_dssm = Redis(app, config_prefix="MY_TRACKS_DSSM")
+# recommendations_my_recs = Redis(app, config_prefix="MY_TRACKS_RECS")
+# recommendations_my_gcf = Redis(app, config_prefix="MY_REDIS_RECOMMENDATIONS_GCF")
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
 catalog.upload_artists(artists_redis.connection)
-catalog.upload_recommendations(
-    recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
-)
+# catalog.upload_recommendations(
+#     recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
+# )
 catalog.upload_recommendations(
     recommendations_dssm.connection, "RECOMMENDATIONS_DSSM_FILE_PATH"
 )
+# catalog.upload_recommendations(
+#     recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
+# catalog.upload_recommendations(
+#     recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
+
 catalog.upload_recommendations(
-    recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
-    key_object='track', key_recommendations='recommendations'
+    recommendations_my_dssm, "MY_TRACKS_DSSM_FILE_PATH",
 )
-catalog.upload_recommendations(
-    recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
-    key_object='track', key_recommendations='recommendations'
-)
+
+# catalog.upload_recommendations(
+#     recommendations_my_dssm, "MY_TRACKS_RECS_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
+
+# catalog.upload_recommendations(
+#     recommendations_my_gcf, "MY_RECOMMENDATIONS_GCF_FILE_PATH"
+# )
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
 parser.add_argument("time", type=float, location="json", required=True)
+
+tracks_to_artist = {}
+for el in catalog.tracks:
+    tracks_to_artist[el.track] = el.artist
 
 
 class Hello(Resource):
@@ -84,28 +105,22 @@ class Track(Resource):
             abort(404, description="Track not found")
 
 
+dssm = MyIndexed(recommendations_my_dssm.connection, catalog,
+                 TopPop(top_tracks, Random(tracks_redis.connection)))
+
+
 class NextTrack(Resource):
     def post(self, user: int):
         start = time.time()
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
+        treatment = Experiments.HW2.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
+            recommender = dssm
         else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 

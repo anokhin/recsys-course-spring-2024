@@ -66,6 +66,7 @@ class Experiments:
     TOP_POP = Experiment("TOP_POP", Split.FOUR_WAY)
     USER_BASED = Experiment("USER_BASED", Split.HALF_HALF)
     PERSONALIZED = Experiment("PERSONALIZED", Split.HALF_HALF)
+    HW2 = Experiment("HW2", Split.HALF_HALF)
     DSSM = Experiment("DSSM", Split.HALF_HALF)
     CONTEXTUAL = Experiment("CONTEXTUAL", Split.HALF_HALF)
     GCF = Experiment("GCF", Split.HALF_HALF)
@@ -73,4 +74,4 @@ class Experiments:
     ALL = Experiment("ALL", Split.SEVEN_WAY)
 
     def __init__(self):
-        self.experiments = [Experiments.ALL]
+        self.experiments = [Experiments.HW2]
