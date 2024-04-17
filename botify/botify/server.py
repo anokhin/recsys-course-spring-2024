@@ -97,8 +97,16 @@ class NextTrack(Resource):
 
         if treatment == Treatment.T1:
             # recommender = Random(tracks_redis.connection)
+            # recommender = IndexedModified(
+            #     recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
             recommender = IndexedModified(
-                recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+                recommendations_dssm.connection, recommendations_div.connection, catalog, Contextual(
+                    recommendations_div.connection, catalog, Random(
+                        tracks_redis.connection
+                    )
+                )
+            )
+
         else:
             recommender = Indexed(
                 recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
