@@ -11,7 +11,7 @@ from gevent.pywsgi import WSGIServer
 
 from botify.data import DataLogger, Datum
 from botify.experiment import Experiments, Treatment
-from botify.recommenders.Indexed import Indexed, MAR
+from botify.recommenders.Indexed import Indexed, MYIndexed
 from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
@@ -97,7 +97,7 @@ class NextTrack(Resource):
         treatment = Experiments.AB.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = MAR(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
+            recommender = MYIndexed(recommendations_mar.connection, catalog, Random(tracks_redis.connection))
         else:
             recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
 

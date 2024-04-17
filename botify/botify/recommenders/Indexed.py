@@ -19,7 +19,7 @@ class Indexed(Recommender):
         else:
             return self.fallback.recommend_next(user, prev_track, prev_track_time)
 
-class MAR(Recommender):
+class MYIndexed(Recommender):
 
     def __init__(self, recommendations_redis, catalog, fallback):
         self.recommendations_redis = recommendations_redis
@@ -29,7 +29,7 @@ class MAR(Recommender):
 
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
         recommendations = self.recommendations_redis.get(user)
-        if recommendations is  None:
+        if recommendations is None:
             return self.fallback.recommend_next(user, prev_track, prev_track_time)
 
         recommendations = list(self.catalog.from_bytes(recommendations))
