@@ -3,6 +3,8 @@ import logging
 import time
 from dataclasses import asdict
 from datetime import datetime
+import random
+random.seed(12345)
 
 from flask import Flask
 from flask_redis import Redis
@@ -16,7 +18,9 @@ from botify.recommenders.random import Random
 from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
+from botify.recommenders.window import Window
 from botify.track import Catalog
+
 
 root = logging.getLogger()
 root.setLevel("INFO")
@@ -34,17 +38,19 @@ recommendations_contextual = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_CON
 recommendations_gcf = Redis(app, config_prefix="REDIS_RECOMMENDATIONS_GCF")
 recommendations_div = Redis(app, config_prefix="REDIS_TRACKS_WITH_DIVERSE_RECS")
 
+user_session_info = Redis(app, config_prefix="REDIS_USER_SESSION_INFO")
+
 data_logger = DataLogger(app)
 
 catalog = Catalog(app).load(app.config["TRACKS_CATALOG"])
 catalog.upload_tracks(tracks_redis.connection)
-catalog.upload_artists(artists_redis.connection)
-catalog.upload_recommendations(
-    recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
-)
+# catalog.upload_artists(artists_redis.connection)
+# catalog.upload_recommendations(
+#     recommendations_ub.connection, "RECOMMENDATIONS_UB_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_lfm.connection, "RECOMMENDATIONS_FILE_PATH"
+# )
 catalog.upload_recommendations(
     recommendations_dssm.connection, "RECOMMENDATIONS_DSSM_FILE_PATH"
 )
@@ -52,15 +58,17 @@ catalog.upload_recommendations(
     recommendations_contextual, "RECOMMENDATIONS_CONTEXTUAL_FILE_PATH",
     key_object='track', key_recommendations='recommendations'
 )
-catalog.upload_recommendations(
-    recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
-)
-catalog.upload_recommendations(
-    recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
-    key_object='track', key_recommendations='recommendations'
-)
+# catalog.upload_recommendations(
+#     recommendations_gcf, "RECOMMENDATIONS_GCF_FILE_PATH"
+# )
+# catalog.upload_recommendations(
+#     recommendations_div, "TRACKS_WITH_DIVERSE_RECS_CATALOG_FILE_PATH",
+#     key_object='track', key_recommendations='recommendations'
+# )
 
-top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
+# top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
+sessions = dict() # Dict[user, List[(track, track_time)]]
+
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -90,22 +98,21 @@ class NextTrack(Resource):
 
         args = parser.parse_args()
 
-        treatment = Experiments.ALL.assign(user)
+        treatment = Experiments.DSSM_VS_ALL.assign(user)
 
         if treatment == Treatment.T1:
-            recommender = StickyArtist(tracks_redis.connection, artists_redis.connection, catalog)
-        elif treatment == Treatment.T2:
-            recommender = TopPop(catalog.top_tracks[:100], Random(tracks_redis.connection))
-        elif treatment == Treatment.T3:
-            recommender = Indexed(recommendations_lfm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T4:
-            recommender = Indexed(recommendations_dssm.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T5:
-            recommender = Contextual(recommendations_contextual.connection, catalog, Random(tracks_redis.connection))
-        elif treatment == Treatment.T6:
-            recommender = Contextual(recommendations_div.connection, catalog, Random(tracks_redis.connection))
-        else:
-            recommender = Random(tracks_redis.connection)
+            recommender = Window(
+                recommendations_dssm.connection,
+                catalog,
+                Random(tracks_redis.connection),
+                sessions=sessions,
+                window_size=4
+            )
+        else:   
+            recommender = Indexed(
+                recommendations_dssm.connection,
+                catalog,
+                Random(tracks_redis.connection))
 
         recommendation = recommender.recommend_next(user, args.track, args.time)
 
