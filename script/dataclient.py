@@ -17,6 +17,8 @@ def run_docker(command: str, echo: bool = True):
     if echo:
         print(f" docker > {command}")
 
+    command = 'sudo ' + command
+
     result = subprocess.run(command.split(" "))
     if result.returncode != 0:
         raise ValueError("Failed to execute docker command")
