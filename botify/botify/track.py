@@ -10,6 +10,8 @@ class Track:
     track: int
     artist: str
     title: str
+    genre: str
+    pop: int
     recommendations: List[int] = field(default=lambda: [])
 
 
@@ -34,6 +36,8 @@ class Catalog:
                         data["track"],
                         data["artist"],
                         data["title"],
+                        data["genre"] if data["genre"] else "",
+                        data["pop"],
                         data.get("recommendations", []),
                     )
                 )
