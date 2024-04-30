@@ -17,7 +17,7 @@ from botify.recommenders.contextual import Contextual
 from botify.recommenders.toppop import TopPop
 from botify.recommenders.sticky_artist import StickyArtist
 from botify.recommenders.my_recommender import MyRecommender
-from botify.track import Catalog
+from botify.track import Catalog, Track
 
 root = logging.getLogger()
 root.setLevel("INFO")
@@ -63,6 +63,21 @@ catalog.upload_recommendations(
 )
 
 top_tracks = TopPop.load_from_json(app.config["TOP_TRACKS"])
+tracks_with_recs = []
+
+with open(app.config["TRACK_RECS"]) as catalog_file:
+    for j, line in enumerate(catalog_file):
+        data = json.loads(line)
+        tracks_with_recs.append(
+            Track(
+                data["track"],
+                data["artist"],
+                data["title"],
+                data["genre"] if data["genre"] else "",
+                data["pop"],
+                data.get("recommendations", []),
+            )
+        )
 
 parser = reqparse.RequestParser()
 parser.add_argument("track", type=int, location="json", required=True)
@@ -99,6 +114,7 @@ class NextTrack(Resource):
                 recommendations_dssm.connection, 
                 recommendations_contextual.connection, 
                 top_tracks,
+                tracks_with_recs,
                 catalog, 
                 Random(tracks_redis.connection)
             )

@@ -3,10 +3,11 @@ import random
 
 
 class MyRecommender(Recommender):
-    def __init__(self, recommendations_dssm_redis, recommendations_contextual_redis, top_tracks, catalog, fallback):
+    def __init__(self, recommendations_dssm_redis, recommendations_contextual_redis, top_tracks, tracks_with_recs, catalog, fallback):
         self.recommendations_dssm_redis = recommendations_dssm_redis
         self.recommendations_contextual_redis = recommendations_contextual_redis
         self.top_tracks = top_tracks
+        self.tracks_with_recs = tracks_with_recs
         self.catalog = catalog
         self.fallback = fallback
 
@@ -28,13 +29,42 @@ class MyRecommender(Recommender):
 
     def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
         dssm_recommendations = self._get_dssm_recommendations(user)
+        contextual_recommendations = self._get_contextual_recommendations(prev_track)
+
+        recs_by_tracks = None
+        for track in self.tracks_with_recs:
+            if track.track == prev_track:
+                recs_by_tracks = track.recommendations
+                break
+
+        all_recommendations = set(dssm_recommendations if dssm_recommendations else [])
+        if contextual_recommendations:
+            all_recommendations.update(contextual_recommendations)
+        if recs_by_tracks:
+            all_recommendations.update(recs_by_tracks)
+
+        all_recommendations_list = list(all_recommendations)
+
         if dssm_recommendations:
-            total_popularity = sum(self._get_track_info(track_id).pop for track_id in dssm_recommendations)
-            weighted_choices = [(track_id, self._get_track_info(track_id).pop / total_popularity) for track_id in dssm_recommendations]
-            chosen_track = random.choices([track for track, weight in weighted_choices], [weight for track, weight in weighted_choices], k=1)[0]
+            weights = []
+            for track_id in all_recommendations_list:
+                f1 = track_id in contextual_recommendations
+                f2 = track_id in recs_by_tracks
+                f3 = track_id in dssm_recommendations
+
+                if f1 + f2 + f3 == 3:
+                    weights.append(3 * self._get_track_info(track_id).pop)
+                elif f1 + f2 + f3 == 2:
+                    weights.append(2 * self._get_track_info(track_id).pop)
+                else:
+                    weights.append(1 * self._get_track_info(track_id).pop)
+            
+            total_weight = sum(weights)
+            normalized_weights = [weight / total_weight for weight in weights]
+
+            chosen_track = random.choices(all_recommendations_list, weights=normalized_weights, k=1)[0]
             return chosen_track
 
-        contextual_recommendations = self._get_contextual_recommendations(prev_track)
         if contextual_recommendations:
             return max(contextual_recommendations, key=lambda track_id: self._get_track_info(track_id).pop)
 
