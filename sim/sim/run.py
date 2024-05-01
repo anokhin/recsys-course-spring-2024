@@ -11,7 +11,9 @@ import scipy.stats as ss
 import tqdm
 import yaml
 
-from sim.agents import Recommender, DummyRecommender, RemoteRecommender
+from sim.agents.dummy import DummyRecommender
+from sim.agents.recommender import Recommender
+from sim.agents.remote import RemoteRecommender
 from sim.agents.console import ConsoleRecommender
 from sim.envs import RecEnv
 from sim.envs.config import RecEnvConfigSchema, RecEnvConfig
@@ -48,12 +50,12 @@ def run_episode(day: int, episode: int, env: RecEnv, recommender: Recommender):
 
 
 def run_experiment(
-    day: int,
-    env: RecEnv,
-    episodes: int,
-    recommender: str,
-    config: RecEnvConfig,
-    position=None,
+        day: int,
+        env: RecEnv,
+        episodes: int,
+        recommender: str,
+        config: RecEnvConfig,
+        position=None,
 ):
     if recommender == DUMMY:
         recommender = DummyRecommender(env.action_space)
