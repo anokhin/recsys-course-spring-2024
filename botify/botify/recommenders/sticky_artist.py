@@ -11,7 +11,7 @@ class StickyArtist(Recommender):
         self.artists_redis = artists_redis
         self.catalog = catalog
 
-    def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
+    def recommend_next(self, user: int, session_id: int, prev_track: int, prev_track_time: float) -> int:
         track_data = self.tracks_redis.get(prev_track)
         if track_data is not None:
             track = self.catalog.from_bytes(track_data)
@@ -22,7 +22,7 @@ class StickyArtist(Recommender):
         if artist_data is not None:
             artist_tracks = self.catalog.from_bytes(artist_data)
         else:
-            return self.fallback.recommend_next(user, prev_track, prev_track_time)
+            return self.fallback.recommend_next(user, session_id, prev_track, prev_track_time)
 
         index = random.randint(0, len(artist_tracks) - 1)
         return artist_tracks[index]

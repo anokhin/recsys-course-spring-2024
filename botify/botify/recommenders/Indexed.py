@@ -9,7 +9,7 @@ class Indexed(Recommender):
         self.fallback = fallback
         self.catalog = catalog
 
-    def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
+    def recommend_next(self, user: int, session_id: int, prev_track: int, prev_track_time: float) -> int:
         recommendations = self.recommendations_redis.get(user)
 
         if recommendations is not None:
@@ -17,4 +17,4 @@ class Indexed(Recommender):
             random.shuffle(shuffled)
             return shuffled[0]
         else:
-            return self.fallback.recommend_next(user, prev_track, prev_track_time)
+            return self.fallback.recommend_next(user, session_id, prev_track, prev_track_time)

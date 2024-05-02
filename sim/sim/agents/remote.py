@@ -30,7 +30,7 @@ class RemoteRecommender(Recommender):
         self.port = config.port
 
     def recommend(self, observation: Dict[str, int], reward: float, done: bool) -> int:
-        data = {"track": int(observation["track"]), "time": reward}
+        data = {"track": int(observation["track"]), "time": reward, "session_id": observation["session_id"]}
         endpoint = "next" if not done else "last"
         url = self.get_request_url(f"{endpoint}/{observation['user']}", {})
         if use_pycurl:

@@ -11,6 +11,7 @@ from botify.experiment import Experiments
 class Datum:
     timestamp: int
     user: int
+    session_id: int
     track: int
     time: float
     latency: float

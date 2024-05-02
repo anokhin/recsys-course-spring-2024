@@ -17,8 +17,8 @@ class TopPop(Recommender):
         self.top_tracks = top_tracks
         self.fallback = fallback
 
-    def recommend_next(self, user: int, prev_track: int, prev_track_time: float) -> int:
+    def recommend_next(self, user: int, session_id: int, prev_track: int, prev_track_time: float) -> int:
         if self.top_tracks:
             return int(numpy.random.choice(self.top_tracks, 1)[0])
 
-        return self.fallback.recommend_next(user, prev_track, prev_track_time)
+        return self.fallback.recommend_next(user, session_id, prev_track, prev_track_time)

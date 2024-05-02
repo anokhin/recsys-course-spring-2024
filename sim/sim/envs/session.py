@@ -1,5 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass
+from uuid import uuid4
+
 import numpy as np
 
 
@@ -14,6 +16,7 @@ class Session:
     def __init__(
         self, user: int, embedding: np.array, first_playback: Playback, budget: int
     ):
+        self.id = uuid4()
         self.user = user
         self.embedding = embedding
         self.budget = budget
@@ -21,7 +24,7 @@ class Session:
         self.finished = False
 
     def observe(self):
-        return {"user": self.user, "track": self.playback[-1].track}
+        return {"user": self.user, "track": self.playback[-1].track, "session_id": int(self.id)}
 
     def update(self, playback: Playback, budget_decrement: int):
         self.playback.append(playback)
