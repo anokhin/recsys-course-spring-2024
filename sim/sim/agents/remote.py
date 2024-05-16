@@ -18,7 +18,6 @@ except ImportError:
     use_pycurl = False
     print("Using urllib3 to access botify API")
 
-
 SCHEME = "http"
 
 

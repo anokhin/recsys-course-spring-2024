@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from pythonjsonlogger import jsonlogger
 
-from botify.experiment import Experiments
+from experiment import Experiments
 
 
 @dataclass
