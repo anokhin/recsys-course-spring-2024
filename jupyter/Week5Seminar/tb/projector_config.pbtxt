@@ -1,0 +1,5 @@
+embeddings {
+tensor_name: "DSSM:00000"
+tensor_path: "00000/DSSM/tensors.tsv"
+metadata_path: "00000/DSSM/metadata.tsv"
+}
